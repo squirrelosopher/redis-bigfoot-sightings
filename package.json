@@ -6,7 +6,9 @@
   "main": "./src/server.js",
   "type": "module",
   "scripts": {
-    "start": "node ./bin/www.js"
+    "data:load": "node ./load_data.js",
+    "data:clear": "node ./clear_data.js",
+    "server:start": "node ./bin/www.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,7 @@
   ],
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "csv-parser": "^3.0.0",
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
     "ejs": "~2.6.1",
