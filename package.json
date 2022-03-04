@@ -1,0 +1,41 @@
+{
+  "name": "redis-bigfoot-sightings",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Using RediSearch and RedisJSON, Redis modules, to provide powerful search over Bigfoot sightings.",
+  "main": "./src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./bin/www.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/squirrelosopher/redisearch-bigfoot-sightings.git"
+  },
+  "bugs": {
+    "url": "https://github.com/squirrelosopher/redisearch-bigfoot-sightings/issues"
+  },
+  "homepage": "https://github.com/squirrelosopher/redisearch-bigfoot-sightings#readme",
+  "keywords": [
+    "RediSearch",
+    "RedisJSON",
+    "Redis",
+    "Plotly",
+    "Bigfoot"
+  ],
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "ioredis": "^4.28.5",
+    "morgan": "~1.9.1"
+  },
+  "author": "Aleksandar Miladinović",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
