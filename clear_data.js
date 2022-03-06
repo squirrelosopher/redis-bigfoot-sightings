@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import Constants from './utils/constants.js';
 import redisRepository from './repository/redis_repository.js';
 

@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import csv from 'csv-parser';
 import fs from 'fs';
 import Constants from './utils/constants.js';

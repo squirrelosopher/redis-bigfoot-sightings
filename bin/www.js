@@ -4,18 +4,16 @@
 * Module dependencies.
 */
 
-
-import 'dotenv/config';
 import app from '../app.js';
 import * as http from 'http';
 import Debug from 'debug';
+import Constants from '../utils/constants.js';
 const debug = Debug('redis-bigfoot-sightings:server');
 
 /*
 * Get port from environment and store in Express.
 */
-
-const PORT = normalizePort(process.env.PORT || '3000');
+const PORT = Constants.PORT;
 app.set('port', PORT);
 
 /*
@@ -30,25 +28,6 @@ const server = http.createServer(app);
 server.listen(PORT);
 server.on('error', onError);
 server.on('listening', onListening);
-
-/*
-* Normalize a port into a number, string, or false.
-*/
-function normalizePort(val) {
-  let port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
 
 /*
 * Event listener for HTTP server "error" event.
