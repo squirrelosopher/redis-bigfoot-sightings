@@ -18,6 +18,12 @@ class RedisRepository {
             db: Constants.REDIS_DB_INDEX
         });
 
+        this.#redis.on('error', (error) => {
+            console.error(`error occurred upon connecting to database, reason: ${error.message}`);
+            debug(error.stack);
+            process.exit(1);
+        })
+
         this.#pipeline = this.#redis.pipeline();
     }
 
