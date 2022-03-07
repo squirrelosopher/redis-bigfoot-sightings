@@ -1,5 +1,5 @@
 import Redis from 'ioredis';
-import Constants from '../utils/constants.js';
+import Constants from '../util/constants.js';
 
 import Debug from 'debug';
 const debug = Debug('redis-bigfoot-sightings:server');
@@ -114,34 +114,7 @@ class RedisRepository {
         let [_, ...foundKeysAndSightings] = await this.#redis.call('FT.SEARCH', this.#INDEX, query, 'LIMIT', 0, 2);
         let foundSightings = foundKeysAndSightings.filter((_, index) => index % 2 !== 0);
 
-        let longitudeData = [];
-        let latitudeData = [];
-        let hoverInfoData = [];
-        let sightingsData = foundSightings.map(s => {
-            let sightingData = JSON.parse(s[1], (key, value) => {
-                if (key === 'location') {
-                    let location = value.split(',');
-                    longitudeData.push(location[0]);
-                    latitudeData.push(location[1]);
-
-                    return undefined;
-                } else if (key === 'title') {
-                    hoverInfoData.push(value);
-                    return undefined;
-                }
-
-                return value;
-            });
-
-            return sightingData;
-        })
-
-        return {
-            'longitudeData': longitudeData,
-            'latitudeData': latitudeData,
-            'hoverInfoData': hoverInfoData,
-            'sightings': sightingsData
-        };
+        return foundSightings;
     }
 }
 
