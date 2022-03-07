@@ -1,5 +1,6 @@
 import Redis from 'ioredis';
-import Constants from '../util/constants.js';
+import ConfigurationConstants from '../util/configuration_constants.js';
+import RedisKeysConstants from '../util/redis_key_constants.js';
 
 import Debug from 'debug';
 const debug = Debug('redis-bigfoot-sightings:server');
@@ -7,15 +8,15 @@ const debug = Debug('redis-bigfoot-sightings:server');
 class RedisRepository {
     #redis = null;
     #pipeline = null;
-    #INDEX = `${Constants.REDIS_INDEX_KEY}`;
+    #INDEX = `${RedisKeysConstants.REDIS_INDEX_KEY}`;
 
     constructor() {
         this.#redis = new Redis({
-            port: Constants.REDIS_PORT,
-            host: Constants.REDIS_HOST,
-            username: Constants.REDIS_USER,
-            password: Constants.REDIS_PASSWORD,
-            db: Constants.REDIS_DB_INDEX
+            port: ConfigurationConstants.REDIS_PORT,
+            host: ConfigurationConstants.REDIS_HOST,
+            username: ConfigurationConstants.REDIS_USER,
+            password: ConfigurationConstants.REDIS_PASSWORD,
+            db: ConfigurationConstants.REDIS_DB_INDEX
         });
 
         this.#redis.on('error', (error) => {

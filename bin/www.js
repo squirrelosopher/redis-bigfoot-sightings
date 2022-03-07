@@ -4,7 +4,7 @@
 * Module dependencies.
 */
 
-import Constants from '../util/constants.js';
+import ConfigurationConstants from '../util/configuration_constants.js';
 import app from '../app.js';
 import * as http from 'http';
 
@@ -14,7 +14,7 @@ const debug = Debug('redis-bigfoot-sightings:server');
 /*
 * Get port from environment and store in Express.
 */
-const PORT = Constants.SERVER_PORT;
+const PORT = ConfigurationConstants.SERVER_PORT;
 app.set('port', PORT);
 
 /*

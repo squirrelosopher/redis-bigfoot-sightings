@@ -1,4 +1,5 @@
-import Constants from './util/constants.js';
+import ConfigurationConstants from './util/configuration_constants.js';
+import RedisKeysConstants from './util/redis_key_constants.js';
 import redisRepository from './repository/redis_repository.js';
 
 import Debug from 'debug';
@@ -9,7 +10,7 @@ const clearData = async () => {
         const indexDestroyedResult = await redisRepository.destroyIndex();
         debug(`index destroy status: ${indexDestroyedResult}`);
 
-        const keys = await redisRepository.getKeys(`${Constants.REDIS_SIGHTING_KEY}:*`);
+        const keys = await redisRepository.getKeys(`${RedisKeysConstants.REDIS_SIGHTING_KEY}:*`);
         if (keys.length > 0) {
             debug(`previous data exists, total keys found: ${keys.length}`);
             keys.forEach(key => redisRepository.pipeDeleteKey(key));

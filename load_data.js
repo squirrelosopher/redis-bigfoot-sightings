@@ -1,8 +1,8 @@
 import csv from 'csv-parser';
 import fs from 'fs';
-import Constants from './util/constants.js';
 import BigfootReport from './model/bigfoot_report.js';
 import redisRepository from './repository/redis_repository.js';
+import RedisKeysConstants from './util/redis_key_constants.js';
 
 import Debug from 'debug';
 const debug = Debug('redis-bigfoot-sightings:server');
@@ -11,12 +11,14 @@ const titleRemovalRegex = new RegExp(/^Report \d*: /);
 const countyRemovalRegex = new RegExp(/ County$/);
 const bigfootReportBuilder = new BigfootReport.Builder();
 
+const DATA_PATH = 'data/bfro_reports_geocoded.csv';
+
 const loadData = async () => {
     try {
         const indexCreatedResult = await redisRepository.createIndex();
         debug(`index creation status: ${indexCreatedResult}`);
 
-        fs.createReadStream(Constants.DATA_PATH)
+        fs.createReadStream(DATA_PATH)
             .pipe(csv())
             .on('data', data => {
                 let {
@@ -57,7 +59,7 @@ const loadData = async () => {
                             .setLocationDetails(location_details)
                             .build();
 
-                        let key = `${Constants.REDIS_SIGHTING_KEY}:${id}`;
+                        let key = `${RedisKeysConstants.REDIS_SIGHTING_KEY}:${id}`;
                         redisRepository.pipeSetKey(key, bigfootReport);
                     } catch (error) {
                         console.error(`unable to set data for sighting with id: ${number}, reason: ${error.message}`);
