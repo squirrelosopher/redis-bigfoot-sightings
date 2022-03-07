@@ -7,6 +7,8 @@ import logger from 'morgan';
 import sightingsRouter from './route/sightings.js';
 import usersRouter from './route/users.js';
 
+import ViewConstants from './util/view_constants.js';
+
 const app = express();
 const __dirname = path.resolve();
 
@@ -20,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/sightings', sightingsRouter);
+app.use(`/${ViewConstants.SIGHTINGS}`, sightingsRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
@@ -36,7 +38,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render(ViewConstants.ERROR);
 });
 
 export default app;
