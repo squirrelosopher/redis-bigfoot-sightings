@@ -31,5 +31,5 @@ export default class Constants {
     /////////////////// Miscellaneous constants //////////////////
     //////////////////////////////////////////////////////////////
     static DATA_PATH = 'data/bfro_reports_geocoded.csv'
-    static SERVER_PORT = parseInt(process.env.PORT || '8080')
+    static SERVER_PORT = parseInt(process.env.SERVER_PORT || '8080')
 }
