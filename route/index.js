@@ -9,7 +9,6 @@ const router = express.Router();
 
 router.get('/:id', async (req, res) => {
   let statistics = await sightingsService.getById(req.params.id);
-  console.log(statistics);
   res.render('index', statistics);
 });
 

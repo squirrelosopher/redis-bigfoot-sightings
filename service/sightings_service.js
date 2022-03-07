@@ -1,9 +1,6 @@
 import redisRepository from '../repository/redis_repository.js';
 import bigfootMapper from '../mapper/bigfoot_mapper.js';
 
-import Debug from 'debug';
-const debug = Debug('redis-bigfoot-sightings:server');
-
 class SightingsService {
 
     async getById(id) {

@@ -27,7 +27,6 @@ class BigfootMapper {
                 bigfootReports.push(bigfootReport);
             });
         } else {
-            console.log(sightingsData);
             let bigfootReport = JSON.parse(sightingsData, (key, value) => {
                 if (key === 'location') {
                     let location = value.split(',');

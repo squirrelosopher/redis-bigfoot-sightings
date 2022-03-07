@@ -85,7 +85,11 @@ class RedisRepository {
     }
 
     async findById(id) {
-        return await this.#redis.call('JSON.GET', `sighting:${id}`);
+        debug(`searching for the sighting with id ${id}`);
+        let sighting = await this.#redis.call('JSON.GET', `sighting:${id}`);
+        debug(`sighting with specified id ${id} found status: ${sighting !== null}`);
+
+        return sighting;
     }
 
     async findByState(state) {
@@ -114,6 +118,7 @@ class RedisRepository {
         let [_, ...foundKeysAndSightings] = await this.#redis.call('FT.SEARCH', this.#INDEX, query, 'LIMIT', 0, 2);
         let foundSightings = foundKeysAndSightings.filter((_, index) => index % 2 !== 0);
 
+        debug(`query returned ${foundSightings.length} result(s)`);
         return foundSightings;
     }
 }
