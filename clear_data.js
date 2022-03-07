@@ -1,4 +1,4 @@
-import Constants from './utils/constants.js';
+import Constants from './util/constants.js';
 import redisRepository from './repository/redis_repository.js';
 
 import Debug from 'debug';

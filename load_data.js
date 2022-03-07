@@ -1,7 +1,7 @@
 import csv from 'csv-parser';
 import fs from 'fs';
-import Constants from './utils/constants.js';
-import BigfootReport from './models/bigfoot_report.js';
+import Constants from './util/constants.js';
+import BigfootReport from './model/bigfoot_report.js';
 import redisRepository from './repository/redis_repository.js';
 
 import Debug from 'debug';
