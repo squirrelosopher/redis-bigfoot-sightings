@@ -8,7 +8,10 @@
   "scripts": {
     "data:load": "node ./load_data.js",
     "data:clear": "node ./clear_data.js",
-    "server:start": "node ./bin/www.js"
+    "compile:clean": "rimraf public/scripts/dist/",
+    "compile:dev": "npm run compile:clean && cross-env NODE_ENV=development node ./esbuild.js",
+    "compile:prod": "npm run compile:clean && cross-env NODE_ENV=production node ./esbuild.js",
+    "server:start": "npm run compile:scripts && node ./bin/www.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +29,7 @@
     "Bigfoot"
   ],
   "dependencies": {
+    "axios": "^0.26.0",
     "cookie-parser": "~1.4.4",
     "csv-parser": "^3.0.0",
     "debug": "~2.6.9",
@@ -34,11 +38,15 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "ioredis": "^4.28.5",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "regenerator-runtime": "^0.13.9"
   },
   "author": "Aleksandar Miladinović",
   "license": "MIT",
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.14.25",
+    "nodemon": "^2.0.15",
+    "rimraf": "^3.0.2"
   }
 }
