@@ -77,12 +77,22 @@ class RedisRepository {
         await this.#pipeline.call('JSON.SET', key, '.', JSON.stringify(value));
     }
 
+    async pipeGetKey(key) {
+        await this.#pipeline.call('JSON.GET', key);
+    }
+
     async pipeDeleteKey(key) {
         await this.#pipeline.del(key);
     }
 
     async pipeExecute() {
         return await this.#pipeline.exec();
+    }
+
+    async findAll() {
+        let allKeys = await this.getKeys(`${RedisKeysConstants.REDIS_SIGHTING_KEY}:*`);
+        allKeys.forEach(key => this.pipeGetKey(key));
+        return await this.pipeExecute();
     }
 
     async findById(id) {

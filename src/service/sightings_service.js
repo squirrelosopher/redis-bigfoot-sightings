@@ -2,6 +2,10 @@ import redisRepository from '../repository/redis_repository.js';
 import bigfootMapper from '../mapper/bigfoot_mapper.js';
 
 class SightingsService {
+    async getAll() {
+        let sightings = await redisRepository.findAll();
+        return bigfootMapper.transform(sightings); 
+    }
 
     async getById(id) {
         let sighting = await redisRepository.findById(id);

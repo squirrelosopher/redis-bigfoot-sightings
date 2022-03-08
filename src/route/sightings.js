@@ -2,13 +2,13 @@ import express from 'express';
 import sightingsService from '../service/sightings_service.js';
 const router = express.Router();
 
-/* GET home page. */
-// router.get('/', function(req, res) {
-//   res.render('index', { title: 'Express' });
-// });
-
 import ViewConstants from '../util/view_constants.js';
 const SIGHTINGS_VIEW = ViewConstants.SIGHTINGS;
+
+router.get('/', async (req, res) => {
+  let statistics = await sightingsService.getAll();
+  res.render(SIGHTINGS_VIEW, statistics);
+});
 
 router.get('/:id', async (req, res) => {
   let statistics = await sightingsService.getById(req.params.id);
@@ -27,7 +27,7 @@ router.get('/county/:county/state/:state', async (req, res) => {
 
 router.get('/containing/:text', async (req, res) => {
   let statistics = await sightingsService.getByContainingText(req.params.text);
-  res.render(SIGHTINGS_VIEW, statistics );
+  res.render(SIGHTINGS_VIEW, statistics);
 });
 
 router.get('/state/:state/containing/:text', async (req, res) => {
