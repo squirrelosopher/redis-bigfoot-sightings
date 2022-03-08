@@ -1,6 +1,5 @@
-import ConfigurationConstants from './util/configuration_constants.js';
-import RedisKeysConstants from './util/redis_key_constants.js';
-import redisRepository from './repository/redis_repository.js';
+import RedisKeysConstants from './src/util/redis_key_constants.js';
+import redisRepository from './src/repository/redis_repository.js';
 
 import Debug from 'debug';
 const debug = Debug('redis-bigfoot-sightings:server');

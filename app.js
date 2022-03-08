@@ -4,10 +4,10 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
-import sightingsRouter from './route/sightings.js';
-import usersRouter from './route/users.js';
+import sightingsRouter from './src/route/sightings.js';
+import usersRouter from './src/route/users.js';
 
-import ViewConstants from './util/view_constants.js';
+import ViewConstants from './src/util/view_constants.js';
 
 const app = express();
 const __dirname = path.resolve();

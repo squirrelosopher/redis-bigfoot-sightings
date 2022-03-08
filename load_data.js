@@ -1,8 +1,8 @@
 import csv from 'csv-parser';
 import fs from 'fs';
-import BigfootReport from './model/bigfoot_report.js';
-import redisRepository from './repository/redis_repository.js';
-import RedisKeysConstants from './util/redis_key_constants.js';
+import BigfootReport from './src/model/bigfoot_report.js';
+import redisRepository from './src/repository/redis_repository.js';
+import RedisKeysConstants from './src/util/redis_key_constants.js';
 
 import Debug from 'debug';
 const debug = Debug('redis-bigfoot-sightings:server');
