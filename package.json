@@ -8,10 +8,12 @@
   "scripts": {
     "data:load": "node ./load_data.js",
     "data:clear": "node ./clear_data.js",
+    "open:page": "node ./open_url.js",
     "compile:clean": "rimraf public/scripts/dist/",
     "compile:dev": "npm run compile:clean && cross-env NODE_ENV=development node ./esbuild.js",
     "compile:prod": "npm run compile:clean && cross-env NODE_ENV=production node ./esbuild.js",
-    "server:start": "npm run compile:scripts && node ./bin/www.js"
+    "server:start:dev": "npm run compile:dev && npm run open:page && node ./bin/www.js",
+    "server:start:prod": "npm run compile:prod && node ./bin/www.js"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,7 @@
     "http-errors": "~1.6.3",
     "ioredis": "^4.28.5",
     "morgan": "~1.9.1",
+    "open": "^8.4.0",
     "regenerator-runtime": "^0.13.9"
   },
   "author": "Aleksandar Miladinović",
