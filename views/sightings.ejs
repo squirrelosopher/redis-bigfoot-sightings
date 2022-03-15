@@ -4,8 +4,6 @@
 <head>
   <title>Bigfoot Sightings</title>
 
-  <script src='https://cdn.plot.ly/plotly-2.9.0.min.js'></script>
-
   <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
@@ -15,31 +13,33 @@
     <%- include('./partials/navigation.ejs') %>
   </div>
 
-  <div class="container mt-3">
-    <form action="/sightings">
-      <div class="row d-flex justify-content-between">
-        <div class="col">
+  <div class="container">
+    <form action="/sightings" class="mt-5">
+      <div class="row justify-content-center">
+        <div class="col-4">
           <input name="text" class="form-control me-2" type="search" placeholder="Try 'river bear'" aria-label="Search">
         </div>
-        <div class="col">
+        <div class="col-sm-1 text-center">
           <button class="btn btn-outline-primary" type="submit">Search</button>
         </div>
-        <div class="col">
-
-        </div>
       </div>
-      <div class="row d-flex justify-content-between">
-        <div class="col">
-          <input type="range" class="form-range" min="0" max="5" id="customRange2">
+      <div class="row mt-2 justify-content-center">
+        <div class="col-4">
+          <input type="range" class="form-range" min="1" max="5" value="0" id="slider-range">
         </div>
-        <div class="col">
-          30km
+        <div class="col-sm-1 text-center">
+          <&nbsp;<b class="text-primary"><span id="slider-data">1</span></b>&nbsp;km
         </div>
       </div>
     </form>
-  </div>
+  </div>  
 
   <div class="container">
+    <div class="row">
+      <div class="col">
+        <div id="bigfootMap" class="map"></div>
+      </div>
+    </div>
     <div class="row">
       <div class="col">
         <div id="seasonMap" class="map"></div>
@@ -48,21 +48,16 @@
         <div id="yearlyMap" class="map"></div>
       </div>
     </div>
-    <div class="row">
-      <div class="col">
-        <div id="bigfootMap" class="map"></div>
-      </div>
-    </div>
   </div>
 
   <script src="/scripts/bootstrap.min.js"></script>
+  <script src='https://cdn.plot.ly/plotly-2.9.0.min.js'></script>
   <script src="/scripts/jquery.min.js"></script>
 
-
   <script src="/scripts/maps.js"></script>
+  <script src="/scripts/slider.js"></script>
 
   <script>
-
     var longitudeData = JSON.parse('<%-JSON.stringify(longitudeData)%>');
     var latitudeData = JSON.parse('<%-JSON.stringify(latitudeData)%>');
     var hoverInfoData = '<%= hoverInfoData %>';

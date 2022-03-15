@@ -10,6 +10,10 @@ class BigfootMapper {
         let years = []
         let counts = []
 
+        if (groupedYearsAndCounts.length > 0) {
+            groupedYearsAndCounts.shift();
+        }
+        
         groupedYearsAndCounts.forEach(yearAndCount => {
             years.push(+yearAndCount[1]);
             counts.push(+yearAndCount[3]);
