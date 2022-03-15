@@ -8,6 +8,7 @@
   "scripts": {
     "data:load": "node ./load_data.js",
     "data:clear": "node ./clear_data.js",
+    "data:reload": "npm run data:clear && npm run data:load",
     "open:page": "node ./open_url.js",
     "compile:clean": "rimraf public/scripts/dist/",
     "compile:dev": "npm run compile:clean && cross-env NODE_ENV=development node ./esbuild.js",
@@ -42,6 +43,9 @@
     "ioredis": "^4.28.5",
     "morgan": "~1.9.1",
     "open": "^8.4.0",
+    "plotly": "^1.0.6",
+    "plotly.js-basic-dist": "^2.11.0",
+    "plotly.js-dist": "^2.11.0",
     "regenerator-runtime": "^0.13.9"
   },
   "author": "Aleksandar Miladinović",

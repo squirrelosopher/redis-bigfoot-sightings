@@ -41,15 +41,12 @@ const loadData = async () => {
                         title = title.replace(titleRemovalRegex, '');
                         county = county.replace(countyRemovalRegex, '');
                         let location = `${longitude},${latitude}`;
-
-                        if (date) {
-                            date = Date.parse(date);
-                        }
+                        let year = new Date(date).getFullYear();
 
                         let bigfootReport = bigfootReportBuilder
                             .setId(id)
                             .setTitle(title)
-                            .setDate(date)
+                            .setYear(year)
                             .setObserved(observed)
                             .setClassification(classification)
                             .setCounty(county)

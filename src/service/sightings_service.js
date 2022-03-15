@@ -1,7 +1,41 @@
 import redisRepository from '../repository/redis_repository.js';
 import bigfootMapper from '../mapper/bigfoot_mapper.js';
+import RedisQueryBuilder from '../repository/redis_query_builder.js';
+
 
 class SightingsService {
+    
+    async getBySearchCriteria(searchCriteria) {
+        let redisQueryBuilder = new RedisQueryBuilder.Builder(searchCriteria.text);
+        if (searchCriteria.county != null) {
+            redisQueryBuilder = redisQueryBuilder.withCounty((searchCriteria.county));
+        }
+
+        if (searchCriteria.state != null) {
+            redisQueryBuilder = redisQueryBuilder.withState((searchCriteria.state));
+        }
+
+        if (searchCriteria.longitude && searchCriteria.latitude && searchCriteria.radius) {
+            redisQueryBuilder = redisQueryBuilder.withLocation(
+                searchCriteria.longitude, 
+                searchCriteria.latitude, 
+                searchCriteria.radius, 
+                searchCriteria.units
+            );
+        }
+
+        let query = redisQueryBuilder.build().searchQuery;
+        if (!query) {
+            query = '*';
+        }
+
+        let sightings = await redisRepository.find(query);
+        let groupedYearsAndCounts = await redisRepository.groupByYear(query);
+        let groupedSeasonsAndCounts = await redisRepository.groupBySeason(query);
+
+        return bigfootMapper.transform(sightings, groupedYearsAndCounts, groupedSeasonsAndCounts); 
+    }
+
     async getAll() {
         let sightings = await redisRepository.findAll();
         return bigfootMapper.transform(sightings); 

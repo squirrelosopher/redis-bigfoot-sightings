@@ -8,7 +8,7 @@ const debug = Debug('redis-bigfoot-sightings:server');
 class RedisRepository {
     #redis = null;
     #pipeline = null;
-    #INDEX = `${RedisKeysConstants.REDIS_INDEX_KEY}`;
+    #INDEX = RedisKeysConstants.REDIS_INDEX_KEY;
 
     constructor() {
         this.#redis = new Redis({
@@ -42,9 +42,10 @@ class RedisRepository {
             '$.title', 'AS', 'title', 'TEXT',
             '$.observed', 'AS', 'observed', 'TEXT',
             '$.locationDetails', 'AS', 'locationDetails', 'TEXT',
+            '$.year', 'AS', 'year', 'NUMERIC', 'SORTABLE',
             '$.location', 'AS', 'location', 'GEO',
             '$.county', 'AS', 'county', 'TAG',
-            '$state', 'AS', 'state', 'TAG'
+            '$.state', 'AS', 'state', 'TAG'
         );
     }
 
@@ -123,10 +124,39 @@ class RedisRepository {
         return await this.find(`@location:[${longitude} ${latitude} ${radius} ${units}]`);
     }
 
+    async groupBySeason(query) {
+        debug(`grouping (season) by the following query: ${query}`);
+
+        let [_, ...groupedSeasonAndCounts] = await this.#redis.call(
+            'FT.AGGREGATE', this.#INDEX, query, 
+            'LOAD', 6, '$.season', 'AS', 'season', '$.id', 'AS', 'id',
+            'GROUPBY', 1, '@season',
+            'REDUCE', 'COUNT_DISTINCT', 1, '@id', 'AS', 'counts',
+            'SORTBY', 2, '@counts', 'DESC');
+
+        debug(`grouping (season) returned ${groupedSeasonAndCounts.length} result(s)`);
+        return groupedSeasonAndCounts;
+    }
+
+    async groupByYear(query) {
+        debug(`grouping (year) by the following query: ${query}`);
+
+        let [_, ...groupedYearsAndCounts] = await this.#redis.call(
+            'FT.AGGREGATE', this.#INDEX, query, 
+            'LOAD', 6, '$.year', 'AS', 'year', '$.id', 'AS', 'id',
+            'GROUPBY', 1, '@year',
+            'REDUCE', 'COUNT_DISTINCT', 1, '@id', 'AS', 'counts',
+            'SORTBY', 2, '@year', 'ASC',
+            'LIMIT', 0, 10000);
+
+        debug(`grouping (year) returned ${groupedYearsAndCounts.length} result(s)`);
+        return groupedYearsAndCounts;
+    }
+
     async find(query) {
         debug(`performing the following query: ${query}`);
 
-        let [_, ...foundKeysAndSightings] = await this.#redis.call('FT.SEARCH', this.#INDEX, query, 'LIMIT', 0, 2);
+        let [_, ...foundKeysAndSightings] = await this.#redis.call('FT.SEARCH', this.#INDEX, query, 'LIMIT', 0, 10000);
         let foundSightings = foundKeysAndSightings.filter((_, index) => index % 2 !== 0);
 
         debug(`query returned ${foundSightings.length} result(s)`);

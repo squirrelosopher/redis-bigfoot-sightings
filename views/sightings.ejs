@@ -3,6 +3,9 @@
 
 <head>
   <title>Bigfoot Sightings</title>
+
+  <script src='https://cdn.plot.ly/plotly-2.9.0.min.js'></script>
+
   <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
@@ -10,11 +13,68 @@
 <body>
   <div class="container mt-4">
     <%- include('./partials/navigation.ejs') %>
+  </div>
 
+  <div class="container mt-3">
+    <form action="/sightings">
+      <div class="row d-flex justify-content-between">
+        <div class="col">
+          <input name="text" class="form-control me-2" type="search" placeholder="Try 'river bear'" aria-label="Search">
+        </div>
+        <div class="col">
+          <button class="btn btn-outline-primary" type="submit">Search</button>
+        </div>
+        <div class="col">
+
+        </div>
+      </div>
+      <div class="row d-flex justify-content-between">
+        <div class="col">
+          <input type="range" class="form-range" min="0" max="5" id="customRange2">
+        </div>
+        <div class="col">
+          30km
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div id="seasonMap" class="map"></div>
+      </div>
+      <div class="col">
+        <div id="yearlyMap" class="map"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div id="bigfootMap" class="map"></div>
+      </div>
+    </div>
   </div>
 
   <script src="/scripts/bootstrap.min.js"></script>
-  <script src="/scripts/sightings.js"></script>
+  <script src="/scripts/jquery.min.js"></script>
+
+
+  <script src="/scripts/maps.js"></script>
+
+  <script>
+
+    var longitudeData = JSON.parse('<%-JSON.stringify(longitudeData)%>');
+    var latitudeData = JSON.parse('<%-JSON.stringify(latitudeData)%>');
+    var hoverInfoData = '<%= hoverInfoData %>';
+    var bigfootReports = '<%= bigfootReports %>';
+
+    var yearsAndCounts = JSON.parse('<%-JSON.stringify(yearsAndCounts)%>');
+    var seasonsAndCounts = JSON.parse('<%-JSON.stringify(seasonsAndCounts)%>');
+
+    drawBigfootMap(longitudeData, latitudeData, hoverInfoData);
+    drawSeasonMap(seasonsAndCounts.classifications, seasonsAndCounts.counts);
+    drawYearlyMap(yearsAndCounts.years, yearsAndCounts.counts);
+  </script>
 </body>
 
 </html>

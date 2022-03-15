@@ -11,18 +11,31 @@
   <div class="container mt-4">
     <%- include('./partials/navigation.ejs') %>
 
-    <div class="container my-5">
-      <div class="jumbotron">
-        <h1 class="display-4">Oops!</h1>
-        <p class="lead">Sorry, an error has occured (<span class="fw-bolder"><%= error.status %></span>), it might be you or it might be us!</p>
-        <hr class="my-4">
-        <p>You couldn't have possible broken a demo application, so we will point the blame on you.</p>
-        <p class="lead mt-4">
-          <a class="btn btn-primary btn-lg" href="https://www.youtube.com/watch?v=1vrEljMfXYo" role="button" target="_blank">Take me home</a>
-          <a class="btn btn-outline-primary btn-lg" href="/sightings" role="button">Seriously, take me home</a>
-        </p>
+      <div class="container my-5">
+        <div class="jumbotron">
+          <h1 class="display-4">Oops!</h1>
+          <p class="lead">Sorry, an error has occured (<span class="fw-bolder">
+              <%= error.status %>
+            </span>), it might be you or it might be us!</p>
+          <hr class="my-4">
+          <p>You couldn't have possible broken a demo application, so we will point the blame on you.</p>
+          <p class="lead mt-4">
+            <a class="btn btn-primary btn-lg" href="https://www.youtube.com/watch?v=1vrEljMfXYo" role="button"
+              target="_blank">Take me home</a>
+            <a class="btn btn-outline-primary btn-lg" href="/sightings" role="button">Seriously, take me home</a>
+          </p>
+
+          <div class="container border border-danger">
+          <pre>
+            <small>
+              <code>
+                <%= error.message %>
+              </code>
+            </small>
+          </pre>
+          </div>
+        </div>
       </div>
-    </div>
 
   </div>
 </body>

@@ -5,8 +5,6 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import sightingsRouter from './src/route/sightings.js';
-import usersRouter from './src/route/users.js';
-
 import ViewConstants from './src/util/view_constants.js';
 
 const app = express();
@@ -23,7 +21,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(`/${ViewConstants.SIGHTINGS}`, sightingsRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -32,13 +29,18 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
+
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  let error = {
+    status: err.status || 500,
+    message: req.app.get('env') === 'development' ? err.message : ''
+  };
 
   // render the error page
-  res.status(err.status || 500);
-  res.render(ViewConstants.ERROR);
+  res.status(error.status);
+  res.render(ViewConstants.ERROR, {
+    error: error
+  });
 });
 
 export default app;

@@ -1,11 +1,37 @@
 import BigfootStatistics from '../model/bigfoot_statistics.js';
 
 class BigfootMapper {
-    transform(sightingsData) {
+    transform(sightingsData, groupedYearsAndCounts, groupedSeasonsAndCounts) {
         let longitudeData = [];
         let latitudeData = [];
         let hoverInfoData = [];
         let bigfootReports = [];
+
+        let years = []
+        let counts = []
+
+        groupedYearsAndCounts.forEach(yearAndCount => {
+            years.push(+yearAndCount[1]);
+            counts.push(+yearAndCount[3]);
+        });
+
+        let yearsAndCounts = {
+            'years': years,
+            'counts': counts
+        };
+
+        let classifications = [];
+        counts = [];
+
+        groupedSeasonsAndCounts.forEach(seasonAndCount => {
+            classifications.push(seasonAndCount[1]);
+            counts.push(+seasonAndCount[3]);
+        });
+
+        let seasonsAndCounts = {
+            'classifications': classifications,
+            'counts': counts
+        };
 
         if (sightingsData instanceof Array) {
             sightingsData.forEach(sighting => {
@@ -45,12 +71,13 @@ class BigfootMapper {
             bigfootReports.push(bigfootReport);
         }
 
-
         let statistics = new BigfootStatistics(
             longitudeData,
             latitudeData,
             hoverInfoData,
-            bigfootReports
+            bigfootReports,
+            yearsAndCounts,
+            seasonsAndCounts
         );
 
         return statistics;
