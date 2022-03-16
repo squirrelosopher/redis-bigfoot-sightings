@@ -58,11 +58,16 @@ function drawSeasonMap(classifications, counts) {
 
   var layout = {
     height: 400,
+    showLegend: true,
+    legend: {
+      x: -0.5,
+      y: 0.5
+    },
     margin: {
       l: 0,
       r: 0
     },
-    title: 'Sightings by Class'
+    title: 'Sightings by Season'
   };
 
   Plotly.newPlot('seasonMap', data, layout, mapOptions);
