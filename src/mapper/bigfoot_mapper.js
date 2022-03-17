@@ -1,11 +1,11 @@
 import BigfootStatistics from '../model/bigfoot_statistics.js';
 
 class BigfootMapper {
-    transform(sightingsData, groupedYearsAndCounts, groupedSeasonsAndCounts) {
+    transform(isGenericSearch, foundSightings, groupedYearsAndCounts, groupedSeasonsAndCounts) {
         let longitudeData = [];
         let latitudeData = [];
         let hoverInfoData = [];
-        let bigfootReports = [];
+        let idData = [];
 
         let years = []
         let counts = []
@@ -13,7 +13,7 @@ class BigfootMapper {
         if (groupedYearsAndCounts.length > 0) {
             groupedYearsAndCounts.shift();
         }
-        
+
         groupedYearsAndCounts.forEach(yearAndCount => {
             years.push(+yearAndCount[1]);
             counts.push(+yearAndCount[3]);
@@ -37,49 +37,35 @@ class BigfootMapper {
             'counts': counts
         };
 
-        if (sightingsData instanceof Array) {
-            sightingsData.forEach(sighting => {
-                let bigfootReport = JSON.parse(sighting[1], (key, value) => {
-                    if (key === 'location') {
-                        let location = value.split(',');
-                        longitudeData.push(location[0]);
-                        latitudeData.push(location[1]);
+        if (foundSightings instanceof Array) {
+            foundSightings.forEach(sighting => {
+                let title = `${sighting[1]}...`;
+                let observed = sighting[3];
+                hoverInfoData.push(isGenericSearch ? title : observed);
 
-                        // return undefined;
-                    } else if (key === 'title') {
-                        hoverInfoData.push(value);
-                        // return undefined;
-                    }
+                idData.push(+sighting[5]);
 
-                    return value;
-                });
-
-                bigfootReports.push(bigfootReport);
+                let location = (sighting[7]).split(',');
+                longitudeData.push(location[0]);
+                latitudeData.push(location[1]);
             });
         } else {
-            let bigfootReport = JSON.parse(sightingsData, (key, value) => {
-                if (key === 'location') {
-                    let location = value.split(',');
-                    longitudeData.push(location[0]);
-                    latitudeData.push(location[1]);
+            let title = foundSightings[1];
+            let observed = foundSightings[3];
+            hoverInfoData.push(isGenericSearch ? title : observed);
 
-                    // return undefined;
-                } else if (key === 'title') {
-                    hoverInfoData.push(value);
-                    // return undefined;
-                }
+            idData.push(+foundSightings[5]);
 
-                return value;
-            });
-
-            bigfootReports.push(bigfootReport);
+            let location = (foundSightings[7]).split(',');
+            longitudeData.push(location[0]);
+            latitudeData.push(location[1]);
         }
 
         let statistics = new BigfootStatistics(
             longitudeData,
             latitudeData,
             hoverInfoData,
-            bigfootReports,
+            idData,
             yearsAndCounts,
             seasonsAndCounts
         );

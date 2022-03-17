@@ -29,11 +29,11 @@ class SightingsService {
             query = '*';
         }
 
-        let sightings = await redisRepository.find(query);
+        let foundSightings = await redisRepository.find(query);
         let groupedYearsAndCounts = await redisRepository.groupByYear(query);
         let groupedSeasonsAndCounts = await redisRepository.groupBySeason(query);
 
-        return bigfootMapper.transform(sightings, groupedYearsAndCounts, groupedSeasonsAndCounts); 
+        return bigfootMapper.transform(query === '*', foundSightings, groupedYearsAndCounts, groupedSeasonsAndCounts); 
     }
 
     async getAll() {

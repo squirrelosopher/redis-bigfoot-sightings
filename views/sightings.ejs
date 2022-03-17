@@ -58,13 +58,14 @@
   <script src="/scripts/slider.js"></script>
 
   <script>
-    var longitudeData = JSON.parse('<%-JSON.stringify(longitudeData)%>');
-    var latitudeData = JSON.parse('<%-JSON.stringify(latitudeData)%>');
-    var hoverInfoData = '<%= hoverInfoData %>';
-    var bigfootReports = '<%= bigfootReports %>';
+    var longitudeData = JSON.parse(`<%-JSON.stringify(longitudeData)%> `);
+    var latitudeData = JSON.parse(`<%- JSON.stringify(latitudeData)%> `);
 
-    var yearsAndCounts = JSON.parse('<%-JSON.stringify(yearsAndCounts)%>');
-    var seasonsAndCounts = JSON.parse('<%-JSON.stringify(seasonsAndCounts)%>');
+    var hoverInfoData = JSON.parse(`<%- JSON.stringify(hoverInfoData) %>`);
+    var idData = JSON.parse(`<%- JSON.stringify(idData) %>`);
+
+    var yearsAndCounts = JSON.parse(`<%- JSON.stringify(yearsAndCounts)%> `);
+    var seasonsAndCounts = JSON.parse(`<%- JSON.stringify(seasonsAndCounts) %>`);
 
     drawBigfootMap(longitudeData, latitudeData, hoverInfoData);
     drawSeasonMap(seasonsAndCounts.classifications, seasonsAndCounts.counts);

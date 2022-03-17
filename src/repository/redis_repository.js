@@ -39,9 +39,9 @@ class RedisRepository {
             'FT.CREATE', this.#INDEX,
             'ON', 'JSON',
             'SCHEMA',
+            '$.id', 'AS', 'id', 'NUMERIC',
             '$.title', 'AS', 'title', 'TEXT',
             '$.observed', 'AS', 'observed', 'TEXT',
-            '$.locationDetails', 'AS', 'locationDetails', 'TEXT',
             '$.year', 'AS', 'year', 'NUMERIC', 'SORTABLE',
             '$.location', 'AS', 'location', 'GEO',
             '$.county', 'AS', 'county', 'TAG',
@@ -156,7 +156,13 @@ class RedisRepository {
     async find(query) {
         debug(`performing the following query: ${query}`);
 
-        let [_, ...foundKeysAndSightings] = await this.#redis.call('FT.SEARCH', this.#INDEX, query, 'LIMIT', 0, 10000);
+        let [_, ...foundKeysAndSightings] = await this.#redis.call(
+            'FT.SEARCH', this.#INDEX, query, 
+            'HIGHLIGHT', 'FIELDS', 2, 'title', 'observed',
+            'SUMMARIZE', 'FIELDS', 2, 'title', 'observed',
+            'LEN', 5,
+            'LIMIT', 0, 10000,
+            'RETURN', 4, 'id', 'title', 'observed', 'location');
         let foundSightings = foundKeysAndSightings.filter((_, index) => index % 2 !== 0);
 
         debug(`query returned ${foundSightings.length} result(s)`);

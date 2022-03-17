@@ -11,7 +11,7 @@ function renderPageData(view, res, statistics) {
     longitudeData: statistics.longitudeData,
     latitudeData: statistics.latitudeData,
     hoverInfoData: statistics.hoverInfoData,
-    bigfootReports: statistics.bigfootReports,
+    idData: statistics.idData,
     yearsAndCounts: statistics.yearsAndCounts,
     seasonsAndCounts: statistics.seasonsAndCounts
   });
