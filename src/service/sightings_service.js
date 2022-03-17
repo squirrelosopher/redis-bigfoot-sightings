@@ -44,10 +44,10 @@ class SightingsService {
     async getById(id) {
         let sighting = await redisRepository.findById(id);
         if (sighting) {
-            return bigfootMapper.transform(sighting);
+            sighting = JSON.parse(sighting);
         }
-
-        return null;
+        
+        return sighting;
     }
 
     async getByState(state) {

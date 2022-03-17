@@ -101,6 +101,10 @@ class RedisRepository {
         let sighting = await this.#redis.call('JSON.GET', `sighting:${id}`);
         debug(`sighting with specified id ${id} found status: ${sighting !== null}`);
 
+        if (sighting === null) {
+            throw new Error(`no sighting with id ${id}`);
+        }
+        
         return sighting;
     }
 

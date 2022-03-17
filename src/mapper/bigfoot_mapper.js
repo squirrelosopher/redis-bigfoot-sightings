@@ -49,16 +49,6 @@ class BigfootMapper {
                 longitudeData.push(location[0]);
                 latitudeData.push(location[1]);
             });
-        } else {
-            let title = foundSightings[1];
-            let observed = foundSightings[3];
-            hoverInfoData.push(isGenericSearch ? title : observed);
-
-            idData.push(foundSightings[5]);
-
-            let location = (foundSightings[7]).split(',');
-            longitudeData.push(location[0]);
-            latitudeData.push(location[1]);
         }
 
         let statistics = new BigfootStatistics(

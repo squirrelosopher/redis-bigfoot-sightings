@@ -7,6 +7,7 @@ import logger from 'morgan';
 import Debug from 'debug';
 const debug = Debug('redis-bigfoot-sightings:server');
 
+import sightingRouter from './src/route/sighting.js';
 import sightingsRouter from './src/route/sightings.js';
 import ViewConstants from './src/util/view_constants.js';
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(`/${ViewConstants.SIGHTING}`, sightingRouter);
 app.use(`/${ViewConstants.SIGHTINGS}`, sightingsRouter);
 
 // catch 404 and forward to error handler
@@ -33,8 +35,8 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
 
-  let errorStatus = err.status || 'Unknown Status';
-  debug(`[${errorStatus}] error occurred, reason '${err.message}'`);
+  let errorStatus = err.status || 404;
+  debug(`[${errorStatus}] unable to process request, reason '${err.message}'`);
 
   // render the error page
   res.status(errorStatus);
