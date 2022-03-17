@@ -4,6 +4,9 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
+import Debug from 'debug';
+const debug = Debug('redis-bigfoot-sightings:server');
+
 import sightingsRouter from './src/route/sightings.js';
 import ViewConstants from './src/util/view_constants.js';
 
@@ -30,16 +33,13 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
 
-  // set locals, only providing error in development
-  let error = {
-    status: err.status || 500,
-    message: req.app.get('env') === 'development' ? err.message : ''
-  };
+  let errorStatus = err.status || 'Unknown Status';
+  debug(`[${errorStatus}] error occurred, reason '${err.message}'`);
 
   // render the error page
-  res.status(error.status);
+  res.status(errorStatus);
   res.render(ViewConstants.ERROR, {
-    error: error
+    errorStatus: errorStatus
   });
 });
 

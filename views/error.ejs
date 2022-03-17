@@ -15,7 +15,7 @@
         <div class="jumbotron">
           <h1 class="display-4">Oops!</h1>
           <p class="lead">Sorry, an error has occured (<span class="fw-bolder">
-              <%= error.status %>
+              <%= errorStatus %>
             </span>), it might be you or it might be us!</p>
           <hr class="my-4">
           <p>You couldn't have possible broken a demo application, so we will point the blame on you.</p>
@@ -24,16 +24,6 @@
               target="_blank">Take me home</a>
             <a class="btn btn-outline-primary btn-lg" href="/sightings" role="button">Seriously, take me home</a>
           </p>
-
-          <div class="container border border-danger">
-          <pre>
-            <small>
-              <code>
-                <%= error.message %>
-              </code>
-            </small>
-          </pre>
-          </div>
         </div>
       </div>
 
