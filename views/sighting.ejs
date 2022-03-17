@@ -26,19 +26,23 @@
                             <i class="fa-solid fa-calendar-days"></i>
                             Reported on
 
-                            <% 
-                                let date = new Date(data.date);
-                            %>
+                            <% let date=new Date(data.date); %>
 
-                            <%= date.toLocaleString("en-US", { month: "long" }); %>
-                            <%= date.getFullYear() %>
+                                <%= date.toLocaleString("en-US", { month: "long" }); %>
+                                    <%= date.getFullYear() %>
                         </div>
                         <h5>
-                            <span class="badge bg-light text-dark">
-                                <%= data.county %>
+                            <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip"
+                                data-bs-placement="left" title="County">
+                                <button class="btn btn-primary" type="button" disabled>
+                                    <%= data.county %>
+                                </button>
                             </span>
-                            <span class="badge bg-light text-dark">
-                                <%= data.state %>
+                            <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip"
+                                data-bs-placement="right" title="State">
+                                <button class="btn btn-primary" type="button" disabled>
+                                    <%= data.state %>
+                                </button>
                             </span>
                         </h5>
                     </header>
@@ -49,15 +53,13 @@
                         <p>
                             <%= data.observed %>
                         </p>
-                        <%
-                            if (data.locationDetails && data.locationDetails.length > 0) { %>
-                                <h2 class="fw-bolder mb-4 mt-5">Location details</h2>
-                                <%= data.locationDetails %>
-                            <% } else { %>
-                                <i class="fa-solid fa-xmark"></i>&nbsp;
-                                <i>No information about location details was provided.</i>
-                            <% }
-                        %>
+                        <% if (data.locationDetails && data.locationDetails.length> 0) { %>
+                            <h2 class="fw-bolder mb-4 mt-5">Location details</h2>
+                            <%= data.locationDetails %>
+                                <% } else { %>
+                                    <i class="fa-solid fa-xmark"></i>&nbsp;
+                                    <i>No information about location details was provided.</i>
+                                    <% } %>
                     </section>
                 </article>
             </div>
@@ -67,22 +69,12 @@
                     <div class="card-body">
                         <div class="col-sm-6">
                             <i class="fa-solid fa-square-question"></i>
-                            
-                            <%
-                                let season = data.season.toLowerCase();
-                                let icon = 'fa-circle-question';
 
-                                if (season === 'summer') {
-                                    icon = 'fa-sun';
-                                } else if (season === 'winter') {
-                                    icon = 'fa-snowflake';
-                                } else if (season === 'fall') {
-                                    icon = 'fa-leaf';
-                                } else if (season === 'spring') {
-                                    icon = 'fa-fan';
-                                }
-                            %>
-                            <i class="fa-solid <%= icon %>"></i>&nbsp;<%= data.season %>
+                            <% let season=data.season.toLowerCase(); let icon='fa-circle-question' ; if
+                                (season==='summer' ) { icon='fa-sun' ; } else if (season==='winter' ) {
+                                icon='fa-snowflake' ; } else if (season==='fall' ) { icon='fa-leaf' ; } else if
+                                (season==='spring' ) { icon='fa-fan' ; } %>
+                                <i class="fa-solid <%= icon %>"></i>&nbsp;<%= data.season %>
                         </div>
                     </div>
                 </div>
@@ -126,6 +118,16 @@
     </div>
 
     <script src="/scripts/bootstrap.min.js"></script>
+    <script>
+        function initializeTooltips() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+
+        initializeTooltips();
+    </script>
 </body>
 
 </html>
