@@ -28,7 +28,7 @@
           <input type="range" class="form-range" min="1" max="5" value="0" id="slider-range">
         </div>
         <div class="col-sm-1 text-center">
-          <&nbsp;<b class="text-primary"><span id="slider-data">1</span></b>&nbsp;km
+          &nbsp;<b class="text-primary"><span id="slider-data">1</span></b>&nbsp;km
         </div>
       </div>
     </form>
@@ -62,12 +62,13 @@
     var latitudeData = JSON.parse(`<%- JSON.stringify(latitudeData)%> `);
 
     var hoverInfoData = JSON.parse(`<%- JSON.stringify(hoverInfoData) %>`);
+    var urlToOpen = `<%= urlToOpen %>`;
     var idData = JSON.parse(`<%- JSON.stringify(idData) %>`);
 
     var yearsAndCounts = JSON.parse(`<%- JSON.stringify(yearsAndCounts)%> `);
     var seasonsAndCounts = JSON.parse(`<%- JSON.stringify(seasonsAndCounts) %>`);
 
-    drawBigfootMap(longitudeData, latitudeData, hoverInfoData);
+    drawBigfootMap(urlToOpen, idData, longitudeData, latitudeData, hoverInfoData);
     drawSeasonMap(seasonsAndCounts.classifications, seasonsAndCounts.counts);
     drawYearlyMap(yearsAndCounts.years, yearsAndCounts.counts);
   </script>

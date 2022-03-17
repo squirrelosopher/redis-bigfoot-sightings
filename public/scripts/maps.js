@@ -5,16 +5,18 @@ const mapOptions = {
     'autoScale2d',
     'zoom2d'
   ],
-  displaylogo: false
+  displaylogo: false,
+  responsive: true
 };
 
-function drawBigfootMap(longitude, latitude, hoverInfo) {
+function drawBigfootMap(urlToOpen, idData, longitudeData, latitudeData, hoverInfoData) {
   var data = [
     {
       type: "scattermapbox",
-      text: hoverInfo,
-      lon: longitude,
-      lat: latitude,
+      text: hoverInfoData,
+      lon: longitudeData,
+      lat: latitudeData,
+      ids: idData,
       marker: { color: "fuchsia", size: 4 }
     }
   ];
@@ -40,6 +42,12 @@ function drawBigfootMap(longitude, latitude, hoverInfo) {
   };
 
   Plotly.newPlot('bigfootMap', data, layout, mapOptions);
+  let bigfootPlot = $('#bigfootMap');
+  bigfootPlot.on('plotly_click', (_, pointsData) => {
+    let id = pointsData.points[0].id;
+    let url = `${urlToOpen}?id=${id}`;
+    window.open(url, '_blank');
+  });
 }
 
 function drawSeasonMap(classifications, counts) {
