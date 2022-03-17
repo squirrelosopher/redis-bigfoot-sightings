@@ -146,7 +146,8 @@ class RedisRepository {
 
         let [_, ...groupedYearsAndCounts] = await this.#redis.call(
             'FT.AGGREGATE', this.#INDEX, query, 
-            'LOAD', 6, '$.year', 'AS', 'year', '$.id', 'AS', 'id',
+            'LOAD', 6, '$.date', 'AS', 'date', '$.id', 'AS', 'id',
+            'APPLY', 'year(@date)', 'AS', 'year',
             'GROUPBY', 1, '@year',
             'REDUCE', 'COUNT_DISTINCT', 1, '@id', 'AS', 'counts',
             'SORTBY', 2, '@year', 'ASC',
