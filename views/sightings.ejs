@@ -6,11 +6,35 @@
 
   <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
   <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 </head>
 
 <body>
   <div class="container mt-5">
     <%- include('./partials/navigation.ejs') %>
+  </div>
+
+  <div class="container mt-2">
+    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="bottom" 
+      title="shows reported Bigfoot sightings on the map based on a query, with short hover information">
+      <button class="btn btn-primary" type="button" disabled>
+        <i class="fa-solid fa-map"></i>
+      </button>
+    </span>
+
+    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="bottom" 
+      title="shows Bigfoot sightings based on a query, grouped by season">
+      <button class="btn btn-primary" type="button" disabled>
+        <i class="fa-solid fa-chart-pie"></i>
+      </button>
+    </span>
+
+    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="bottom" 
+      title="shows Bigfoot sightings based on a query, grouped by year">
+      <button class="btn btn-primary" type="button" disabled>
+        <i class="fa-solid fa-chart-area"></i>
+      </button>
+    </span>
   </div>
 
   <div class="container">
@@ -32,7 +56,7 @@
         </div>
       </div>
     </form>
-  </div>  
+  </div>
 
   <div class="container">
     <div class="row">
@@ -58,6 +82,15 @@
   <script src="/scripts/slider.js"></script>
 
   <script>
+    function initializeTooltips() {
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    }
+
+    initializeTooltips();
+
     var longitudeData = JSON.parse(`<%-JSON.stringify(longitudeData)%> `);
     var latitudeData = JSON.parse(`<%- JSON.stringify(latitudeData)%> `);
 
