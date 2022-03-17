@@ -1,7 +1,7 @@
 export default class BigfootReport {
     id = null
     title = null
-    year = null
+    date = null
     observed = null
     classification = null
     county = null
@@ -12,7 +12,7 @@ export default class BigfootReport {
     static Builder = class {
         id = null
         title = null
-        year = null
+        date = null
         observed = null
         classification = null
         county = null
@@ -31,8 +31,8 @@ export default class BigfootReport {
             return this
         }
 
-        setYear(date) {
-            this.year = date
+        setDate(date) {
+            this.date = date
             return this
         }
 
@@ -75,7 +75,7 @@ export default class BigfootReport {
             const bigfootReport = new BigfootReport(
                 this.id,
                 this.title,
-                this.year,
+                this.date,
                 this.observed,
                 this.classification,
                 this.county,
@@ -92,7 +92,7 @@ export default class BigfootReport {
     constructor(id, title, date, observed, classification, county, state, season, location, locationDetails) {
         this.title = title
         this.id = id
-        this.year = date
+        this.date = date
         this.observed = observed
         this.classification = classification
         this.county = county

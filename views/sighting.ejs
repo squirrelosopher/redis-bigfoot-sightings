@@ -22,7 +22,16 @@
                         <h1 class="fw-bolder mb-1">
                             <%= data.title %>
                         </h1>
-                        <div class="text-muted fst-italic my-2">Reported on <%= data.year %>
+                        <div class="text-muted fst-italic my-2">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            Reported on
+
+                            <% 
+                                let date = new Date(data.date);
+                            %>
+
+                            <%= date.toLocaleString("en-US", { month: "long" }); %>
+                            <%= date.getFullYear() %>
                         </div>
                         <h5>
                             <span class="badge bg-light text-dark">

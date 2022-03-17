@@ -42,7 +42,6 @@ class RedisRepository {
             '$.id', 'AS', 'id', 'NUMERIC',
             '$.title', 'AS', 'title', 'TEXT',
             '$.observed', 'AS', 'observed', 'TEXT',
-            '$.year', 'AS', 'year', 'NUMERIC', 'SORTABLE',
             '$.location', 'AS', 'location', 'GEO',
             '$.county', 'AS', 'county', 'TAG',
             '$.state', 'AS', 'state', 'TAG'
@@ -104,7 +103,7 @@ class RedisRepository {
         if (sighting === null) {
             throw new Error(`no sighting with id ${id}`);
         }
-        
+
         return sighting;
     }
 

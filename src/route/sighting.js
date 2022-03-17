@@ -5,7 +5,6 @@ import ViewConstants from '../util/view_constants.js';
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
-    console.error(req.query.id);
     let sighting = await sightingsService
         .getById(req.query.id)
         .catch(err => {
