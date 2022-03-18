@@ -74,7 +74,7 @@ class RedisRepository {
     }
 
     async pipeSetKey(key, value) {
-        await this.#pipeline.call('JSON.SET', key, '.', JSON.stringify(value));
+        await this.#pipeline.call('JSON.SET', key, '$', JSON.stringify(value));
     }
 
     async pipeGetKey(key) {
