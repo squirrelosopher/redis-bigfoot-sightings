@@ -9,7 +9,7 @@ const clearData = async () => {
         const indexDestroyedResult = await redisRepository.destroyIndex();
         debug(`index destroy status: ${indexDestroyedResult}`);
 
-        const keys = await redisRepository.getKeys(`${RedisKeysConstants.REDIS_SIGHTING_KEY}:*`);
+        const keys = await redisRepository.getKeys(`${RedisKeysConstants.SIGHTING_KEY}:*`);
         if (keys.length > 0) {
             debug(`previous data exists, total keys found: ${keys.length}`);
             keys.forEach(key => redisRepository.pipeDeleteKey(key));

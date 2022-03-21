@@ -24,6 +24,12 @@ export default class RedisQueryBuilder {
         }
 
         build() {
+            if (this.searchQuery) {
+                this.searchQuery = this.searchQuery.replace('null', '').trim();
+            } else {
+                this.searchQuery = '*';
+            }
+
             const queryBuilder = new RedisQueryBuilder(this.searchQuery);
             return queryBuilder;
         }

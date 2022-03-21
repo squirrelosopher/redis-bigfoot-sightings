@@ -37,6 +37,9 @@ const loadData = async () => {
 
                 if (longitude && latitude) {
                     try {
+                        redisRepository.pipeAddToSet(RedisKeysConstants.COUNTIES_KEY, county);
+                        redisRepository.pipeAddToSet(RedisKeysConstants.STATES_KEY, state);
+
                         let id = parseInt(number);
                         title = title.replace(titleRemovalRegex, '');
                         county = county.replace(countyRemovalRegex, '');
@@ -55,8 +58,8 @@ const loadData = async () => {
                             .setLocationDetails(location_details)
                             .build();
 
-                        let key = `${RedisKeysConstants.REDIS_SIGHTING_KEY}:${id}`;
-                        redisRepository.pipeSetKey(key, bigfootReport);
+                        let key = `${RedisKeysConstants.SIGHTING_KEY}:${id}`;
+                        redisRepository.pipeSetJsonKey(key, bigfootReport);
                     } catch (error) {
                         console.error(`unable to set data for sighting with id: ${number}, reason: ${error.message}`);
                         debug(error.stack);

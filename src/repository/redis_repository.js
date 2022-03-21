@@ -8,7 +8,7 @@ const debug = Debug('redis-bigfoot-sightings:server');
 class RedisRepository {
     #redis = null;
     #pipeline = null;
-    #INDEX = RedisKeysConstants.REDIS_INDEX_KEY;
+    #INDEX = RedisKeysConstants.INDEX_KEY;
 
     constructor() {
         this.#redis = new Redis({
@@ -73,11 +73,19 @@ class RedisRepository {
         return await this.#redis.keys(keyPrefix);
     }
 
-    async pipeSetKey(key, value) {
+    async getSetValues(setKey) {
+        return await this.#redis.call('SMEMBERS', setKey);
+    }
+
+    async pipeAddToSet(setKey, value) {
+        await this.#pipeline.call('SADD', setKey, value);
+    }
+
+    async pipeSetJsonKey(key, value) {
         await this.#pipeline.call('JSON.SET', key, '$', JSON.stringify(value));
     }
 
-    async pipeGetKey(key) {
+    async pipeGetJsonKey(key) {
         await this.#pipeline.call('JSON.GET', key);
     }
 
@@ -90,8 +98,8 @@ class RedisRepository {
     }
 
     async findAll() {
-        let allKeys = await this.getKeys(`${RedisKeysConstants.REDIS_SIGHTING_KEY}:*`);
-        allKeys.forEach(key => this.pipeGetKey(key));
+        let allKeys = await this.getKeys(`${RedisKeysConstants.SIGHTING_KEY}:*`);
+        allKeys.forEach(key => this.pipeGetJsonKey(key));
         return await this.pipeExecute();
     }
 

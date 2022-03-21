@@ -22,6 +22,7 @@ function drawBigfootMap(urlToOpen, idData, longitudeData, latitudeData, hoverInf
   ];
 
   var layout = {
+    height: 560,
     dragmode: "zoom",
     mapbox: {
       style: "white-bg",
@@ -33,9 +34,9 @@ function drawBigfootMap(urlToOpen, idData, longitudeData, latitudeData, hoverInf
         }
       ],
       center: {
-        lat: 38, lon: -90
+        lat: 44, lon: -92
       },
-      zoom: 3,
+      zoom: 2.5,
       autosize: true
     },
     margin: { r: 0, t: 0, b: 0, l: 0 }

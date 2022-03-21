@@ -4,6 +4,9 @@ import SearchCriteria from '../model/search_criteria.js';
 import ViewConstants from '../util/view_constants.js';
 import ConfigurationConstants from '../util/configuration_constants.js';
 
+const states = await sightingsService.getStates();
+const counties = await sightingsService.getCounties();
+
 const router = express.Router();
 const urlToOpen = `${ConfigurationConstants.SERVER_HOST}:${ConfigurationConstants.SERVER_PORT}/${ViewConstants.SIGHTING}`;
 
@@ -15,7 +18,9 @@ function renderPageData(view, res, statistics) {
     urlToOpen: urlToOpen,
     idData: statistics.idData,
     yearsAndCounts: statistics.yearsAndCounts,
-    seasonsAndCounts: statistics.seasonsAndCounts
+    seasonsAndCounts: statistics.seasonsAndCounts,
+    statesData: states,
+    countiesData: counties
   });
 }
 

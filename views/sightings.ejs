@@ -15,21 +15,21 @@
   </div>
 
   <div class="container mt-2">
-    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="bottom" 
+    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="bottom"
       title="shows reported Bigfoot sightings on the map based on a query, with short hover information">
       <button class="btn btn-primary" type="button" disabled>
         <i class="fa-solid fa-map"></i>
       </button>
     </span>
 
-    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="bottom" 
+    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="bottom"
       title="shows Bigfoot sightings based on a query, grouped by season">
       <button class="btn btn-primary" type="button" disabled>
         <i class="fa-solid fa-chart-pie"></i>
       </button>
     </span>
 
-    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="bottom" 
+    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="bottom"
       title="shows Bigfoot sightings based on a query, grouped by year">
       <button class="btn btn-primary" type="button" disabled>
         <i class="fa-solid fa-chart-area"></i>
@@ -40,25 +40,35 @@
   <div class="container">
     <form action="/sightings" class="mt-5">
       <div class="row justify-content-center">
+        <div class="col-sm-2">
+          <input id="state" name="state" class="form-control me-2 typeahead tt-query" type="search" placeholder="State" autocomplete="off"
+            spellcheck="false">
+        </div>
         <div class="col-4">
-          <input name="text" class="form-control me-2" type="search" placeholder="Try 'river bear'" aria-label="Search">
+          <input name="text" class="form-control me-2" type="search" placeholder="Try 'river bear'" autocomplete="off"
+          spellcheck="false">
         </div>
         <div class="col-sm-1 text-center">
-          <button class="btn btn-outline-primary" type="submit">Search</button>
+          <button class="btn btn-outline-primary" type="submit">Apply</button>
         </div>
       </div>
-      <div class="row mt-2 justify-content-center">
+
+      <div class="row mt-2 mb-4 justify-content-center">
+        <div class="col-sm-2">
+          <input id="county" name="county" class="form-control me-2 typeahead tt-query" type="search" placeholder="County" autocomplete="off"
+            spellcheck="false" >
+        </div>
         <div class="col-4">
           <input type="range" class="form-range" min="1" max="5" value="0" id="slider-range">
         </div>
         <div class="col-sm-1 text-center">
-          &nbsp;<b class="text-primary"><span id="slider-data">10</span></b>&nbsp;km
+          <b class="text-primary"><span id="slider-data">10</span></b>&nbsp;km
         </div>
       </div>
     </form>
   </div>
 
-  <div class="container">
+  <div class="container position-relative">
     <div class="row">
       <div class="col">
         <div id="bigfootMap" class="map"></div>
@@ -80,6 +90,7 @@
 
   <script src="/scripts/maps.js"></script>
   <script src="/scripts/slider.js"></script>
+  <script src="/scripts/typeahead.bundle.js"></script>
 
   <script>
     function initializeTooltips() {
@@ -90,6 +101,30 @@
     }
 
     initializeTooltips();
+
+    function autoSuggest(suggestEl, suggestData) {
+      var dataHound = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: suggestData
+      });
+
+      $(`#${suggestEl}`).typeahead(
+        {
+          hint: true,
+          highlight: true,
+          minLength: 2
+        },
+        {
+          source: dataHound
+        });
+    }
+
+    var states = JSON.parse(`<%- JSON.stringify(statesData) %>`);
+    var counties = JSON.parse(`<%- JSON.stringify(countiesData) %>`);
+
+    autoSuggest('state', states);
+    autoSuggest('county', counties);
 
     var longitudeData = JSON.parse(`<%-JSON.stringify(longitudeData)%> `);
     var latitudeData = JSON.parse(`<%- JSON.stringify(latitudeData)%> `);
