@@ -35,7 +35,9 @@ const loadData = async () => {
                     location_details
                 } = data;
 
-                if (longitude && latitude) {
+                let titleValid = title && title.trim().length > 3;
+                let observedValid = observed && observed.trim().length > 3;
+                if (longitude && latitude && titleValid && observedValid) {
                     try {
                         redisRepository.pipeAddToSet(RedisKeysConstants.COUNTIES_KEY, county);
                         redisRepository.pipeAddToSet(RedisKeysConstants.STATES_KEY, state);
@@ -47,9 +49,9 @@ const loadData = async () => {
 
                         let bigfootReport = bigfootReportBuilder
                             .setId(id)
-                            .setTitle(title)
+                            .setTitle(title.trim())
                             .setDate(Date.parse(date) / 1000)
-                            .setObserved(observed)
+                            .setObserved(observed.trim())
                             .setClassification(classification)
                             .setCounty(county)
                             .setState(state)
