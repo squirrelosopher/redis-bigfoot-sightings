@@ -136,7 +136,7 @@ class RedisRepository {
     }
 
     async groupBySeason(query) {
-        debug(`grouping (season) by the following query: ${query}`);
+        debug(`grouping (season) by the following query: '${query}'`);
 
         let [_, ...groupedSeasonAndCounts] = await this.#redis.call(
             'FT.AGGREGATE', this.#INDEX, query, 
@@ -150,7 +150,7 @@ class RedisRepository {
     }
 
     async groupByYear(query) {
-        debug(`grouping (year) by the following query: ${query}`);
+        debug(`grouping (year) by the following query: '${query}'`);
 
         let [_, ...groupedYearsAndCounts] = await this.#redis.call(
             'FT.AGGREGATE', this.#INDEX, query, 
@@ -166,7 +166,7 @@ class RedisRepository {
     }
 
     async find(query) {
-        debug(`performing the following query: ${query}`);
+        debug(`performing the following query: '${query}'`);
 
         let [_, ...foundKeysAndSightings] = await this.#redis.call(
             'FT.SEARCH', this.#INDEX, query, 
