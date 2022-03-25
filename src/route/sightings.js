@@ -10,7 +10,7 @@ const counties = await sightingsService.getCounties();
 const router = express.Router();
 const urlToOpen = `${ConfigurationConstants.SERVER_HOST}:${ConfigurationConstants.SERVER_PORT}/${ViewConstants.SIGHTING}`;
 
-function renderPageData(view, res, statistics) {
+function renderPageData(view, res, statistics, searchCriteria) {
   res.render(view, {
     longitudeData: statistics.longitudeData,
     latitudeData: statistics.latitudeData,
@@ -20,7 +20,8 @@ function renderPageData(view, res, statistics) {
     yearsAndCounts: statistics.yearsAndCounts,
     seasonsAndCounts: statistics.seasonsAndCounts,
     statesData: states,
-    countiesData: counties
+    countiesData: counties,
+    searchCriteria: searchCriteria
   });
 }
 
@@ -28,7 +29,7 @@ router.get('/', async (req, res) => {
   let searchCriteria = SearchCriteria.fromJSON(req.query);
   let statistics = await sightingsService.getBySearchCriteria(searchCriteria);
   
-  renderPageData(ViewConstants.SIGHTINGS, res, statistics);
+  renderPageData(ViewConstants.SIGHTINGS, res, statistics, searchCriteria);
 });
 
 export default router;

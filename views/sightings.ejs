@@ -42,11 +42,11 @@
       <div class="row justify-content-center">
         <div class="col-sm-2">
           <input id="state" name="state" class="form-control me-2 typeahead tt-query" type="search" placeholder="State" autocomplete="off"
-            spellcheck="false">
+            spellcheck="false" value="<%= searchCriteria.state || '' %>">
         </div>
         <div class="col-4">
           <input name="text" class="form-control me-2" type="search" placeholder="Try 'river bear'" autocomplete="off"
-          spellcheck="false">
+          spellcheck="false" value="<%= searchCriteria.text || '' %>">
         </div>
         <div class="col-sm-1 text-center">
           <button class="btn btn-outline-primary" type="submit">Apply</button>
@@ -56,7 +56,7 @@
       <div class="row mt-2 mb-4 justify-content-center">
         <div class="col-sm-2">
           <input id="county" name="county" class="form-control me-2 typeahead tt-query" type="search" placeholder="County" autocomplete="off"
-            spellcheck="false" >
+            spellcheck="false" value="<%= searchCriteria.county || '' %>">
         </div>
         <div class="col-4">
           <input type="range" class="form-range" min="1" max="5" value="0" id="slider-range">
