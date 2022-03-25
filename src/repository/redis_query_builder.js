@@ -14,7 +14,7 @@ export default class RedisQueryBuilder {
         }
 
         withCounty(county) {
-            this.searchQuery += ` @county:{${state}}`
+            this.searchQuery += ` @county:{${county}}`
             return this;
         }
 
