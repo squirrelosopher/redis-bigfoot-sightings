@@ -10,11 +10,8 @@
     "data:clear": "node ./clear_data.js",
     "data:reload": "npm run data:clear && npm run data:load",
     "open:page": "node ./open_url.js",
-    "compile:clean": "rimraf public/scripts/dist/",
-    "compile:dev": "npm run compile:clean && cross-env NODE_ENV=development node ./esbuild.js",
-    "compile:prod": "npm run compile:clean && cross-env NODE_ENV=production node ./esbuild.js",
-    "server:start:dev": "npm run compile:dev && npm run open:page && cross-env NODE_ENV=development node ./bin/www.js",
-    "server:start:prod": "npm run compile:prod && cross-env NODE_ENV=production node ./bin/www.js"
+    "server:start:dev": "npm run open:page && cross-env NODE_ENV=development node ./bin/www.js",
+    "server:start:prod": "cross-env NODE_ENV=production node ./bin/www.js"
   },
   "repository": {
     "type": "git",
