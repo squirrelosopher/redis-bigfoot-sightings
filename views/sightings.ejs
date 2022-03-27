@@ -39,8 +39,8 @@
 
   <div class="container">
     <form id="queryForm" action="/sightings" class="mt-5">
-      <input id="queryFormLongitude" name="lon" class="d-none">
-      <input id="queryFormLatitude" name="lat" class="d-none">
+      <input id="queryFormLongitude" name="lon" class="d-none" value="<%= searchCriteria.lon || '' %>">
+      <input id="queryFormLatitude" name="lat" class="d-none" value="<%= searchCriteria.lat || '' %>">
       <div class="row justify-content-center">
         <div class="col-sm-2">
           <input id="state" name="state" class="form-control me-2 typeahead tt-query" type="search" placeholder="State" autocomplete="off"
@@ -50,7 +50,7 @@
           <input name="text" class="form-control me-2" type="search" placeholder="Try 'river bear'" autocomplete="off"
           spellcheck="false" value="<%= searchCriteria.text || '' %>">
         </div>
-        <div class="col-sm-1 text-center">
+        <div class="col-sm-2 text-center">
           <div id="queryFormSubmit" class="btn btn-outline-primary">Apply</div>
         </div>
       </div>
@@ -64,8 +64,10 @@
           <input name="radius" type="range" class="form-range" min="1000" max="5000" step="1000" id="slider-range"
             value="<%= searchCriteria.radius || 3000 %>">
         </div>
-        <div class="col-sm-1 text-center">
-          <b class="text-primary"><span id="slider-data"><%= searchCriteria.radius || '3000' %></span></b>&nbsp;km
+        <div class="col-sm-2 text-center">
+          <b class="text-primary"><span id="slider-data"><%= searchCriteria.radius || '3000' %></span></b>&nbsp;
+          <input id="queryFormUnits" name="units" class="d-none" value="<%= searchCriteria.units || 'km' %>">
+          <span id="unitsValue" class="btn btn-outline-secondary btn-sm"><%= searchCriteria.units || 'km' %></span>
         </div>
       </div>
     </form>
@@ -96,6 +98,14 @@
   <script src="/scripts/typeahead.js"></script>
 
   <script>
+    $('#unitsValue').click(() => {
+      let queryFormUnits = $('#queryFormUnits');
+      let units = queryFormUnits.val() === 'km' ? 'mi' : 'km';
+
+      queryFormUnits.val(units);
+      $('#unitsValue').html(units);
+    });
+
     $('#queryFormSubmit').click(() => {
       let bigfootMap = $('#bigfootMap');
       let longitude = bigfootMap[0].data[1].lon;
