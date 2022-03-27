@@ -12,25 +12,40 @@ const mapOptions = {
 function drawBigfootMap(urlToOpen, idData, longitudeData, latitudeData, hoverInfoData) {
   var data = [
     {
-      type: "scattermapbox",
-      text: hoverInfoData,
+      type: 'scattermapbox',
       lon: longitudeData,
       lat: latitudeData,
       ids: idData,
-      marker: { color: "fuchsia", size: 4 }
+      marker: { color: 'rgb(255, 0, 255)', size: 4 },
+      showlegend: false,
+      hovertext: hoverInfoData,
+      hovertemplate: '%{lon:.2f}, %{lat:.2f} <br> %{hovertext}<extra></extra>'
+    },
+    {
+      type: 'scattermapbox',
+      lat: ['55.0'],
+      lon: ['-110.0'],
+      mode: 'markers',
+      marker: {
+        color: 'rgba(255, 0, 255, 0.4)',
+        size: 20
+      },
+      showlegend: false,
+      customdata: 'geological',
+      hovertemplate: '%{lon:.2f}, %{lat:.2f} <br> Geological center for radius search [<b>hardcoded</b>]<extra></extra>'
     }
   ];
 
   var layout = {
     height: 560,
-    dragmode: "zoom",
+    dragmode: 'zoom',
     mapbox: {
-      style: "white-bg",
+      style: 'white-bg',
       layers: [
         {
-          sourcetype: "raster",
-          source: ["https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}"],
-          below: "traces"
+          sourcetype: 'raster',
+          source: ['https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}'],
+          below: 'traces'
         }
       ],
       center: {
@@ -43,11 +58,15 @@ function drawBigfootMap(urlToOpen, idData, longitudeData, latitudeData, hoverInf
   };
 
   Plotly.newPlot('bigfootMap', data, layout, mapOptions);
-  let bigfootPlot = $('#bigfootMap');
-  bigfootPlot.on('plotly_click', (_, pointsData) => {
-    let id = pointsData.points[0].id;
-    let url = `${urlToOpen}?id=${id}`;
-    window.open(url, '_blank');
+  $('#bigfootMap').on('plotly_click', (a, pointsData) => {
+    let point = pointsData.points[0];
+    let customData = point.data.customdata;
+
+    if (!customData) {
+      let id = point.id;
+      let url = `${urlToOpen}?id=${id}`;
+      window.open(url, '_blank');
+    }
   });
 }
 
@@ -56,8 +75,8 @@ function drawSeasonMap(classifications, counts) {
   var data = [{
     values: counts,
     labels: classifications,
-    textinfo: "label+percent+name",
-    textposition: "outside",
+    textinfo: 'label+percent+name',
+    textposition: 'outside',
     automargin: true,
     type: 'pie',
     marker: {
