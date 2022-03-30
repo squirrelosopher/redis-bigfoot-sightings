@@ -2,7 +2,7 @@ import csv from 'csv-parser';
 import fs from 'fs';
 import BigfootReport from './src/model/bigfoot_report.js';
 import redisRepository from './src/repository/redis_repository.js';
-import RedisKeysConstants from './src/util/redis_key_constants.js';
+import RedisKeysConstants from './src/constant/redis_key_constants.js';
 
 import Debug from 'debug';
 const debug = Debug('redis-bigfoot-sightings:server');
@@ -13,6 +13,8 @@ const bigfootReportBuilder = new BigfootReport.Builder();
 
 const DATA_PATH = 'data/bfro_reports_geocoded.csv';
 
+// Load data into Redis, including the creation of the Redis Index.
+// Redis pipes are used in order to speed up the process.
 const loadData = async () => {
     try {
         const indexCreatedResult = await redisRepository.createIndex();

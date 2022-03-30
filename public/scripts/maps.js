@@ -58,7 +58,7 @@ function drawBigfootMap(urlToOpen, idData, longitudeData, latitudeData, hoverInf
   };
 
   Plotly.newPlot('bigfootMap', data, layout, mapOptions);
-  $('#bigfootMap').on('plotly_click', (a, pointsData) => {
+  $('#bigfootMap').on('plotly_click', (_, pointsData) => {
     let point = pointsData.points[0];
     let customData = point.data.customdata;
 

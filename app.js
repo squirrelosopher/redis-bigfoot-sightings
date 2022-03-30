@@ -1,7 +1,6 @@
 import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
-import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import Debug from 'debug';
@@ -9,19 +8,18 @@ const debug = Debug('redis-bigfoot-sightings:server');
 
 import sightingRouter from './src/route/sighting.js';
 import sightingsRouter from './src/route/sightings.js';
-import ViewConstants from './src/util/view_constants.js';
+import ViewConstants from './src/constant/view_constants.js';
 
 const app = express();
 const __dirname = path.resolve();
 
-// view engine setup
+// Use EJS as View Engine.
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(`/${ViewConstants.SIGHTING}`, sightingRouter);

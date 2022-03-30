@@ -1,7 +1,7 @@
 import redisRepository from '../repository/redis_repository.js';
 import bigfootMapper from '../mapper/bigfoot_mapper.js';
 import RedisQueryBuilder from '../repository/redis_query_builder.js';
-import RedisKeysConstants from '../util/redis_key_constants.js';
+import RedisKeysConstants from '../constant/redis_key_constants.js';
 
 
 class SightingsService {
@@ -42,11 +42,6 @@ class SightingsService {
         return bigfootMapper.transform(isGenericSearch, foundSightings, groupedYearsAndCounts, groupedSeasonsAndCounts); 
     }
 
-    async getAll() {
-        let sightings = await redisRepository.findAll();
-        return bigfootMapper.transform(sightings); 
-    }
-
     async getById(id) {
         let sighting = await redisRepository.findById(id);
         if (sighting) {
@@ -54,35 +49,6 @@ class SightingsService {
         }
         
         return sighting;
-    }
-
-    async getByState(state) {
-        let sightings = await redisRepository.findByState(state);
-        return bigfootMapper.transform(sightings);
-    }
-
-    async getByCountyAndState(county, state) {
-        let sightings = await redisRepository.findByCountyState(county, state);
-        return bigfootMapper.transform(sightings);
-    }
-
-    async getByContainingText(text) {
-        let sightings = await redisRepository.findContaining(text);
-        return bigfootMapper.transform(sightings);
-    }
-
-    async getByStateContainingText(state, text) {
-        let sightings = await redisRepository.findByStateContaining(state, text);
-        return bigfootMapper.transform(sightings);
-    }
-
-    async getByGeo(longitude, latitude, radius, metrics) {
-        if (metrics === 'km' || metrics === 'mi') {
-            let sightings = await redisRepository.findNear(longitude, latitude, radius, metrics);
-            return bigfootMapper.transform(sightings);
-        }
-
-        return null;
     }
 }
 

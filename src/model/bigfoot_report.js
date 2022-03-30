@@ -1,78 +1,78 @@
 export default class BigfootReport {
-    id = null
-    title = null
-    date = null
-    observed = null
-    classification = null
-    county = null
-    state = null
-    season = null
-    locationDetails = null
+    id = null;
+    title = null;
+    date = null;
+    observed = null;
+    classification = null;
+    county = null;
+    state = null;
+    season = null;
+    locationDetails = null;
 
     static Builder = class {
-        id = null
-        title = null
-        date = null
-        observed = null
-        classification = null
-        county = null
-        state = null
-        season = null
-        location = null
-        locationDetails = null
+        id = null;
+        title = null;
+        date = null;
+        observed = null;
+        classification = null;
+        county = null;
+        state = null;
+        season = null;
+        location = null;
+        locationDetails = null;
 
         setId(id) {
-            this.id = id
-            return this
+            this.id = id;
+            return this;
         }
 
         setTitle(title) {
-            this.title = title
-            return this
+            this.title = title;
+            return this;
         }
 
         setDate(date) {
-            this.date = date
-            return this
+            this.date = date;
+            return this;
         }
 
         setObserved(observed) {
-            this.observed = observed
-            return this
+            this.observed = observed;
+            return this;
         }
 
         setClassification(classification) {
-            this.classification = classification
-            return this
+            this.classification = classification;
+            return this;
         }
 
         setCounty(county) {
-            this.county = county
-            return this
+            this.county = county;
+            return this;
         }
 
         setState(state) {
-            this.state = state
-            return this
+            this.state = state;
+            return this;
         }
 
         setSeason(season) {
-            this.season = season
-            return this
+            this.season = season;
+            return this;
         }
 
         setLocation(location) {
-            this.location = location
-            return this
+            this.location = location;
+            return this;
         }
 
         setLocationDetails(locationDetails) {
-            this.locationDetails = locationDetails
-            return this
+            this.locationDetails = locationDetails;
+            return this;
         }
 
         build() {
-            const bigfootReport = new BigfootReport(
+            let bigfootReport = new BigfootReport(
                 this.id,
                 this.title,
                 this.date,
@@ -83,9 +83,9 @@ export default class BigfootReport {
                 this.season,
                 this.location,
                 this.locationDetails
-            )
+            );
 
-            return bigfootReport
+            return bigfootReport;
         }
     }
 

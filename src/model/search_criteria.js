@@ -1,3 +1,5 @@
+import SearchCriteriaConstants from "../constant/search_criteria_constants.js";
+
 export default class SearchCriteria {
     county = null
     state = null;
@@ -9,13 +11,13 @@ export default class SearchCriteria {
 
     static fromJSON(data) {
         let searchCriteria = new SearchCriteria();
-        searchCriteria.county = data.county || null;
-        searchCriteria.state = data.state || null;
-        searchCriteria.text = data.text || null;
-        searchCriteria.longitude = data.lon || null;
-        searchCriteria.latitude = data.lat || null;
-        searchCriteria.radius = data.radius || null;
-        searchCriteria.units = data.units || 'km';
+        searchCriteria.county = data.county || SearchCriteriaConstants.DEFAULT_COUNTY;
+        searchCriteria.state = data.state || SearchCriteriaConstants.DEFAULT_STATE;
+        searchCriteria.text = data.text || SearchCriteriaConstants.DEFAULT_TEXT;
+        searchCriteria.longitude = data.lon || SearchCriteriaConstants.DEFAULT_LONGITUDE;
+        searchCriteria.latitude = data.lat || SearchCriteriaConstants.DEFAULT_LATITUDE;
+        searchCriteria.radius = data.radius || SearchCriteriaConstants.DEFAULT_RADIUS;
+        searchCriteria.units = data.units || SearchCriteriaConstants.DEFAULT_UNITS;
 
         return searchCriteria;
     }

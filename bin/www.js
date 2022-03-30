@@ -4,7 +4,7 @@
 * Module dependencies.
 */
 
-import ConfigurationConstants from '../src/util/configuration_constants.js';
+import ConfigurationConstants from '../src/constant/configuration_constants.js';
 import app from '../app.js';
 import * as http from 'http';
 

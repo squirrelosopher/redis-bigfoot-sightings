@@ -1,8 +1,8 @@
 import express from 'express';
 import sightingsService from '../service/sightings_service.js';
 import SearchCriteria from '../model/search_criteria.js';
-import ViewConstants from '../util/view_constants.js';
-import ConfigurationConstants from '../util/configuration_constants.js';
+import ViewConstants from '../constant/view_constants.js';
+import ConfigurationConstants from '../constant/configuration_constants.js';
 
 const states = await sightingsService.getStates();
 const counties = await sightingsService.getCounties();
@@ -12,13 +12,8 @@ const urlToOpen = `${ConfigurationConstants.SERVER_HOST}:${ConfigurationConstant
 
 function renderPageData(view, res, statistics, searchCriteria) {
   res.render(view, {
-    longitudeData: statistics.longitudeData,
-    latitudeData: statistics.latitudeData,
-    hoverInfoData: statistics.hoverInfoData,
+    statistics: statistics,
     urlToOpen: urlToOpen,
-    idData: statistics.idData,
-    yearsAndCounts: statistics.yearsAndCounts,
-    seasonsAndCounts: statistics.seasonsAndCounts,
     statesData: states,
     countiesData: counties,
     searchCriteria: searchCriteria

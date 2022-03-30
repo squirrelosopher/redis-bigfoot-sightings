@@ -29,8 +29,6 @@
     "Bigfoot"
   ],
   "dependencies": {
-    "axios": "^0.26.0",
-    "cookie-parser": "~1.4.4",
     "csv-parser": "^3.0.0",
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
@@ -40,9 +38,6 @@
     "ioredis": "^4.28.5",
     "morgan": "~1.9.1",
     "open": "^8.4.0",
-    "plotly": "^1.0.6",
-    "plotly.js-basic-dist": "^2.11.0",
-    "plotly.js-dist": "^2.11.0",
     "regenerator-runtime": "^0.13.9"
   },
   "author": "Aleksandar Miladinović",

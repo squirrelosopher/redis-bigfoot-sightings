@@ -1,6 +1,6 @@
 import open from 'open';
-import ConfigurationConstants from './src/util/configuration_constants.js';
-import ViewConstants from './src/util/view_constants.js';
+import ConfigurationConstants from './src/constant/configuration_constants.js';
+import ViewConstants from './src/constant/view_constants.js';
 
 const url = `${ConfigurationConstants.SERVER_HOST}:${ConfigurationConstants.SERVER_PORT}/${ViewConstants.SIGHTINGS}`;
 

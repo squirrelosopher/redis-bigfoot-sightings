@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
-import ConfigurationConstants from '../util/configuration_constants.js';
-import RedisKeysConstants from '../util/redis_key_constants.js';
+import ConfigurationConstants from '../constant/configuration_constants.js';
+import RedisKeysConstants from '../constant/redis_key_constants.js';
 
 import Debug from 'debug';
 const debug = Debug('redis-bigfoot-sightings:server');
@@ -65,10 +65,6 @@ class RedisRepository {
         await this.#redis.quit();
     }
 
-    async getInfo(info) {
-        return await this.#redis.info(info);
-    }
-
     async getKeys(keyPrefix) {
         return await this.#redis.keys(keyPrefix);
     }
@@ -85,22 +81,12 @@ class RedisRepository {
         await this.#pipeline.call('JSON.SET', key, '$', JSON.stringify(value));
     }
 
-    async pipeGetJsonKey(key) {
-        await this.#pipeline.call('JSON.GET', key);
-    }
-
     async pipeDeleteKey(key) {
         await this.#pipeline.del(key);
     }
 
     async pipeExecute() {
         return await this.#pipeline.exec();
-    }
-
-    async findAll() {
-        let allKeys = await this.getKeys(`${RedisKeysConstants.SIGHTING_KEY}:*`);
-        allKeys.forEach(key => this.pipeGetJsonKey(key));
-        return await this.pipeExecute();
     }
 
     async findById(id) {
@@ -113,26 +99,6 @@ class RedisRepository {
         }
 
         return sighting;
-    }
-
-    async findByState(state) {
-        return await this.find(`@state:{${state}}`);
-    }
-
-    async findByCountyState(county, state) {
-        return await this.find(`@county:{${county}} @state:{${state}}`);
-    }
-
-    async findContaining(text) {
-        return await this.find(text);
-    }
-
-    async findByStateContaining(state, text) {
-        return await this.find(`${text} @state:{${state}}`);
-    }
-
-    async findNear(longitude, latitude, radius, units) {
-        return await this.find(`@location:[${longitude} ${latitude} ${radius} ${units}]`);
     }
 
     async groupBySeason(query) {

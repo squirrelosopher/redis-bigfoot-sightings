@@ -1,9 +1,11 @@
-import RedisKeysConstants from './src/util/redis_key_constants.js';
+import RedisKeysConstants from './src/constant/redis_key_constants.js';
 import redisRepository from './src/repository/redis_repository.js';
 
 import Debug from 'debug';
 const debug = Debug('redis-bigfoot-sightings:server');
 
+// Clear data from Redis, including the deletion of the Redis Index.
+// Redis pipes are used in order to speed up the process.
 const clearData = async () => {
     try {
         const indexDestroyedResult = await redisRepository.destroyIndex();

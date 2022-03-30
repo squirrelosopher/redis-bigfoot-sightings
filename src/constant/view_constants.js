@@ -6,5 +6,4 @@ export default class ViewConstants {
     static SIGHTINGS = 'sightings';
     static SIGHTING = 'sighting';
     static ERROR = 'error';
-    
 }

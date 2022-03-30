@@ -1,6 +1,6 @@
 import express from 'express';
 import sightingsService from '../service/sightings_service.js';
-import ViewConstants from '../util/view_constants.js';
+import ViewConstants from '../constant/view_constants.js';
 
 const router = express.Router();
 
