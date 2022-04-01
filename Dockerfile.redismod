@@ -1,0 +1,18 @@
+FROM redislabs/redisearch:2.4.3 as redisearch
+FROM redislabs/rejson:2.0.7 as rejson
+FROM redisfab/redis:6.2.6-x64-bullseye
+
+ENV LD_LIBRARY_PATH /usr/lib/redis/modules
+
+WORKDIR /data
+RUN apt-get update -qq
+RUN apt-get upgrade -y
+RUN rm -rf /var/cache/apt
+
+COPY --from=redisearch ${LD_LIBRARY_PATH}/redisearch.so ${LD_LIBRARY_PATH}/
+COPY --from=rejson ${LD_LIBRARY_PATH}/*.so ${LD_LIBRARY_PATH}/
+
+ENTRYPOINT ["redis-server"]
+CMD ["--loadmodule", "/usr/lib/redis/modules/redisearch.so", \
+    "--loadmodule", "/usr/lib/redis/modules/rejson.so", \
+    "--appendonly", "yes"]
