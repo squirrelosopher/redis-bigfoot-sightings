@@ -11,7 +11,8 @@
     "data:reload": "npm run data:clear && npm run data:load",
     "open:page": "node ./open_url.js",
     "server:start:dev": "npm run open:page && cross-env NODE_ENV=development node ./bin/www.js",
-    "server:start:prod": "cross-env NODE_ENV=production node ./bin/www.js"
+    "server:start:prod": "cross-env NODE_ENV=production node ./bin/www.js",
+    "start": "npm run data:reload && npm run server:start:prod"
   },
   "repository": {
     "type": "git",
