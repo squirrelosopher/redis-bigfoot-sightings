@@ -25,7 +25,7 @@ services:
       - REDIS_PORT=$REDIS_PORT
       - REDIS_USER=$REDIS_USER
       - REDIS_PASSWORD=$REDIS_PASSWORD
-      - REDIS_DB_INDEX=$REDIS_DB_INDEX
+      - REDIS_DB_ALIAS=$REDIS_DB_ALIAS
     ports:
       - $SERVER_PORT:$SERVER_PORT
     deploy:

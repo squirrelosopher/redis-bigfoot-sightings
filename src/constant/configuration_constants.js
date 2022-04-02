@@ -8,7 +8,7 @@ export default class ConfigurationConstants {
     static REDIS_PORT = parseInt(process.env.REDIS_PORT || '6379');
     static REDIS_USER = process.env.REDIS_USER || 'default';
     static REDIS_PASSWORD = process.env.REDIS_PASSWORD || '';
-    static REDIS_DB_INDEX = parseInt(process.env.REDIS_DB_INDEX || '0');
+    static REDIS_DB_ALIAS = parseInt(process.env.REDIS_DB_ALIAS || '0');
     
     //////////////////////////////////////////////////////////////
     /////////////////////// Server constants /////////////////////

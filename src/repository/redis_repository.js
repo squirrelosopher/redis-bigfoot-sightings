@@ -16,7 +16,7 @@ class RedisRepository {
             host: ConfigurationConstants.REDIS_HOST,
             username: ConfigurationConstants.REDIS_USER,
             password: ConfigurationConstants.REDIS_PASSWORD,
-            db: ConfigurationConstants.REDIS_DB_INDEX
+            db: ConfigurationConstants.REDIS_DB_ALIAS
         });
 
         this.#redis.on('error', (error) => {
