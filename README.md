@@ -69,7 +69,19 @@ Page showing complete details for the specific Bigfoot sighting, including count
 | REDIS_DB_ALIAS    | database alias to connect to |
 
 
-# Data
+# Resources
+
+## Data
 Application is using Bigfoot sightings data, which contains sighing data publicly available on the [*BFRO*](https://www.bfro.net/) website in a more digestible form.
 
 The **geocoded** version has been used since the application itself offers geospatial search as well. Bigfoot sightings data can be found and downloaded [here](https://data.world/timothyrenner/bfro-sightings-data/workspace/file?filename=bfro_reports_geocoded.csv).
+
+## Images
+
+- [Bigfoot icon](https://www.flaticon.com/premium-icon/bigfoot_1126838)
+- [Bigfoot image](https://www.visitredwoods.com/listing/bigfoot-found-in-the-redwoods/146/)
+
+## Other
+
+- [plotly.js](https://plotly.com/javascript/)
+- [typeahead.js](https://twitter.github.io/typeahead.js/)
