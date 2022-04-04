@@ -1,8 +1,7 @@
 import open from 'open';
 import ConfigurationConstants from './src/constant/configuration_constants.js';
-import ViewConstants from './src/constant/view_constants.js';
 
-const url = `${ConfigurationConstants.SERVER_HOST}:${ConfigurationConstants.SERVER_PORT}/${ViewConstants.SIGHTINGS}`;
+const url = `${ConfigurationConstants.SERVER_HOST}:${ConfigurationConstants.SERVER_PORT}`;
 
 const openedUrlProcess = await open(url, {
     wait: false
