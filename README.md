@@ -29,39 +29,44 @@ $ docker --version
 Docker version 20.10.12, build e91ed57
 ```
 
-Set appropriate environment variables or use the variables within the given example. See [section](#environment) regarding environment variables.
+Copy/rename environment variables.
 
 ```bash
 $ cp .env.example .env
 ```
-Once you have **.env** set, build and start application with following *Docker Compose* commands.
+
+Set appropriate environment variables or use already predefined variables. See [section](#environment) for more details about each environment variable.
+
+Once you have **.env** file copied/modified, build and start application with following *Docker Compose* commands.
 
 ```bash
 $ docker-compose build
-$ docker-compose up --force-recreate
+$ docker-compose up
 ...
-Friday, 01 Apr 2022 19:51:55 GMT redis-bigfoot-sightings:server server listening on port 80
+Friday, 01 Apr 2022 19:51:55 GMT INFO server listening on port 80
 ...
 ```
+You can now explore reported Bigfoot sightings locally (**localhost**);
+
 # Pages
 
-## sightings
+## /
 Page showing the overview of the Bigfoot sightings, with the ability to query for specific sighting(s).
 
-## sighting
+## /sighting
 Page showing complete details for the specific Bigfoot sighting, including county, state, location coordinates, location details, date of the actual report, season and classification details, as well as title and description.
 
 # Environment
-| Variable          | Default                           | Description |
-| -----------       | -----------                       | ----------- |
-| SERVER_HOST       | http://localhost                  | host on which applicatin will be running |
-| SERVER_PORT       | 80                                | port on which applicatin will be running |
-| DEBUG             | redis-bigfoot-sightings:server    | defines debug logging |
-| REDIS_HOST        | redis                             | host on which *Redis* server is running |
-| REDIS_PORT        | 6379                              | port on which *Redis* server is running |
-| REDIS_USER        | default                           | user used to connect to *Redis* server |
-| REDIS_PASSWORD    |                                   | password used to connect to *Redis* server |
-| REDIS_DB_ALIAS    | 0                                 | database alias to connect to |
+| Variable          | Description |
+| -----------       | ----------- |
+| SERVER_HOST       | host on which application will be running |
+| SERVER_PORT       | port on which application will be running |
+| DEBUG             | defines debug logging |
+| REDIS_HOST        | host on which *Redis* server is running |
+| REDIS_PORT        | port on which *Redis* server is running |
+| REDIS_USER        | user used to connect to *Redis* server |
+| REDIS_PASSWORD    | password used to connect to *Redis* server |
+| REDIS_DB_ALIAS    | database alias to connect to |
 
 
 # Data
