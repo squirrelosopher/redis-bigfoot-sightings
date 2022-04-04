@@ -3,7 +3,7 @@ import ConfigurationConstants from '../constant/configuration_constants.js';
 import RedisKeysConstants from '../constant/redis_key_constants.js';
 
 import Debug from 'debug';
-const debug = Debug('redis-bigfoot-sightings:server');
+const debug = Debug('TRACE');
 
 class RedisRepository {
     #redis = null;

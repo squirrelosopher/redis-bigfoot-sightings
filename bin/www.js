@@ -3,7 +3,7 @@ import app from '../app.js';
 import * as http from 'http';
 
 import Debug from 'debug';
-const debug = Debug('redis-bigfoot-sightings:server');
+const debug = Debug('INFO');
 
 const PORT = ConfigurationConstants.SERVER_PORT;
 app.set('port', PORT);

@@ -5,7 +5,7 @@ import redisRepository from './src/repository/redis_repository.js';
 import RedisKeysConstants from './src/constant/redis_key_constants.js';
 
 import Debug from 'debug';
-const debug = Debug('redis-bigfoot-sightings:server');
+const debug = Debug('TRACE');
 
 const titleRemovalRegex = new RegExp(/^Report \d*: /);
 const countyRemovalRegex = new RegExp(/ County$/);
