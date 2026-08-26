@@ -1,0 +1,59 @@
+services:
+  # Redis 8 ships the query engine and JSON in the core distribution, so the
+  # previous hand-rolled image that copied module .so files out of two other
+  # images is no longer needed.
+  redis:
+    image: redis:8-alpine
+    command: ['redis-server', '--appendonly', 'yes']
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    volumes:
+      - redis-data:/data
+    ports:
+      - '${REDIS_PORT:-6379}:6379'
+    restart: unless-stopped
+
+  # One-shot import. Splitting it out of the server means the application
+  # container starts clean every time instead of re-importing 5000 rows on each
+  # restart, and a failed import fails the stack loudly.
+  data-loader:
+    build: .
+    command: ['node', 'scripts/load-data.js']
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    env_file:
+      - path: .env
+        required: false
+    restart: 'no'
+
+  app:
+    build: .
+    depends_on:
+      redis:
+        condition: service_healthy
+      data-loader:
+        condition: service_completed_successfully
+    environment:
+      NODE_ENV: production
+      SERVER_PORT: 8080
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - '${SERVER_PORT:-8080}:8080'
+    restart: unless-stopped
+
+volumes:
+  redis-data:

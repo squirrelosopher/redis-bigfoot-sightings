@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sighting - Bigfoot Sightings</title>
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/vendor/bootstrap.css" />
+    <link rel="stylesheet" href="/vendor/fontawesome.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!-- Matches the `container` used by <main>, so the brand and the content
+           below it share one left margin. -->
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img
+            src="/favicon.ico"
+            alt=""
+            width="32"
+            height="32"
+            class="d-inline-block align-text-top"
+          />
+          Bigfoot Sightings
+        </a>
+        <a class="btn btn-outline-primary btn-sm" href="/">Back to search</a>
+      </div>
+    </nav>
+
+    <main class="container my-4">
+      <div id="sightingAlert" class="alert alert-warning d-none" role="alert"></div>
+
+      <article id="sightingContent" class="d-none">
+        <h1 id="sightingTitle" class="h3"></h1>
+
+        <dl class="row mt-4">
+          <dt class="col-sm-3">Report number</dt>
+          <dd class="col-sm-9" id="sighting-id"></dd>
+
+          <dt class="col-sm-3">Date</dt>
+          <dd class="col-sm-9" id="sighting-date"></dd>
+
+          <dt class="col-sm-3">Classification</dt>
+          <dd class="col-sm-9" id="sighting-classification"></dd>
+
+          <dt class="col-sm-3">Season</dt>
+          <dd class="col-sm-9" id="sighting-season"></dd>
+
+          <dt class="col-sm-3">State</dt>
+          <dd class="col-sm-9" id="sighting-state"></dd>
+
+          <dt class="col-sm-3">County</dt>
+          <dd class="col-sm-9" id="sighting-county"></dd>
+
+          <dt class="col-sm-3">Coordinates</dt>
+          <dd class="col-sm-9">
+            <span id="sighting-location"></span>
+            <a
+              id="sightingMapLink"
+              class="ms-2 d-none"
+              href="#"
+              target="_blank"
+              rel="noopener"
+              title="Open in OpenStreetMap"
+            >
+              <i class="fa-solid fa-map-location-dot"></i>
+            </a>
+          </dd>
+
+          <dt class="col-sm-3">Location details</dt>
+          <dd class="col-sm-9" id="sighting-locationDetails"></dd>
+        </dl>
+
+        <h2 class="h5 mt-4">What was observed</h2>
+        <p id="sightingObserved" class="text-body"></p>
+      </article>
+    </main>
+
+    <script type="module" src="/scripts/app/sighting-page.js"></script>
+  </body>
+</html>

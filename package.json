@@ -1,18 +1,28 @@
 {
   "name": "redis-bigfoot-sightings",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Using RediSearch and RedisJSON to provide powerful search over Bigfoot sightings.",
-  "main": "app.js",
   "type": "module",
+  "description": "Full-text, tag and geospatial search over BFRO Bigfoot sighting reports, powered by RediSearch and RedisJSON.",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "data:load": "node ./load_data.js",
-    "data:clear": "node ./clear_data.js",
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "data:load": "node scripts/load-data.js",
+    "data:clear": "node scripts/clear-data.js",
     "data:reload": "npm run data:clear && npm run data:load",
-    "open:page": "node ./open_url.js",
-    "server:start:dev": "npm run open:page && cross-env NODE_ENV=development node ./bin/www.js",
-    "server:start:prod": "cross-env NODE_ENV=production node ./bin/www.js",
-    "start": "npm run data:reload && npm run server:start:prod"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run --project unit",
+    "test:watch": "vitest --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:all": "vitest run",
+    "test:coverage": "vitest run --project unit --coverage"
   },
   "repository": {
     "type": "git",
@@ -23,29 +33,44 @@
   },
   "homepage": "https://github.com/squirrelosopher/redisearch-bigfoot-sightings#readme",
   "keywords": [
-    "RediSearch",
-    "RedisJSON",
-    "Redis",
-    "Plotly",
-    "Bigfoot"
+    "redis",
+    "redisearch",
+    "redisjson",
+    "redis-stack",
+    "full-text-search",
+    "geospatial",
+    "express",
+    "rest-api",
+    "openapi",
+    "testcontainers"
   ],
-  "dependencies": {
-    "csv-parser": "^3.0.0",
-    "debug": "~2.6.9",
-    "dotenv": "^16.0.0",
-    "ejs": "~2.6.1",
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
-    "ioredis": "^4.28.5",
-    "morgan": "~1.9.1",
-    "open": "^8.4.0",
-    "regenerator-runtime": "^0.13.9"
-  },
   "author": "Aleksandar Miladinović",
   "license": "MIT",
+  "dependencies": {
+    "compression": "^1.8.1",
+    "csv-parse": "^7.0.2",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "helmet": "^8.3.0",
+    "ioredis": "^6.0.0",
+    "pino": "^10.3.1",
+    "pino-http": "^11.0.0",
+    "swagger-ui-express": "^5.0.1",
+    "yaml": "^2.9.0",
+    "zod": "^4.4.3"
+  },
   "devDependencies": {
-    "cross-env": "^7.0.3",
-    "nodemon": "^2.0.15",
-    "rimraf": "^3.0.2"
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^4.1.11",
+    "eslint": "^10.9.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-n": "^18.3.0",
+    "globals": "^17.11.0",
+    "open": "^11.0.1",
+    "pino-pretty": "^13.1.3",
+    "prettier": "^3.9.6",
+    "supertest": "^7.2.2",
+    "testcontainers": "^12.0.4",
+    "vitest": "^4.1.11"
   }
 }

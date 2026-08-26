@@ -1,0 +1,6 @@
+node_modules
+coverage
+data
+public/vendor
+public/webfonts
+package-lock.json

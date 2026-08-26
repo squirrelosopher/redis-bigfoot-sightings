@@ -1,30 +1,42 @@
+/* Application styles. Everything else comes from the vendored Bootstrap build. */
+
+.chart {
+  width: 100%;
+}
+
+/*
+ * The filters do not need the full width of the page the way the map and the
+ * charts below them do, and short rows are quicker to scan than ones that span
+ * the whole window. Capped rather than fixed, so the Bootstrap grid still
+ * collapses normally on narrow screens.
+ */
+.search-filters {
+  max-width: 900px;
+}
+
+/*
+ * The radius slider and its unit toggle share a row that has to end on the same
+ * baseline as the neighbouring text inputs, so the wrapper matches the height
+ * Bootstrap gives a .form-control.
+ */
+.radius-control {
+  min-height: calc(1.5em + 0.75rem + 2px);
+}
+
+/* Fixed width so switching between "km" and "mi" does not resize the slider. */
+.unit-toggle {
+  min-width: 3.5rem;
+}
+
 .svg-container {
-    margin: 0px auto !important;
+  margin: 0 auto !important;
 }
 
-.tt-hint {
-	color: #999999;
+#sightingObserved {
+  white-space: pre-line;
+  line-height: 1.7;
 }
 
-.tt-menu {
-	background-color: #FFFFFF;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 4px;
-	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-	margin-top: 12px;
-	padding: 4px 0;
-}
-
-.tt-suggestion {
-	padding: 3px 10px;
-}
-
-.tt-suggestion:hover {
-	cursor: pointer;
-	background-color: #0275d8;
-	color: #FFFFFF;
-}
-
-.tt-suggestion p {
-	margin: 0;
+dl dd {
+  margin-bottom: 0.75rem;
 }

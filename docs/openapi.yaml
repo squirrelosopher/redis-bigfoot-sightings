@@ -1,0 +1,390 @@
+openapi: 3.1.0
+
+info:
+  title: Bigfoot Sightings API
+  version: 2.0.0
+  description: |
+    Full text, tag and geospatial search over BFRO Bigfoot sighting reports,
+    backed by RediSearch and RedisJSON.
+
+    Matched terms are returned as structured highlight segments rather than
+    markup, so clients can render them without trusting HTML from the payload.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: /
+    description: this server
+
+tags:
+  - name: Sightings
+    description: Search and retrieve Bigfoot sighting reports
+  - name: Health
+    description: Liveness and readiness probes
+
+paths:
+  /api/sightings:
+    get:
+      tags: [Sightings]
+      summary: Search sighting reports
+      description: |
+        Combines free text, state, county and radius filters. Every criterion is
+        optional; omitting all of them matches every report.
+      operationId: searchSightings
+      parameters:
+        - name: text
+          in: query
+          description: Free text matched against the title and the observation.
+          schema:
+            type: string
+            maxLength: 200
+          example: river bear
+        - name: state
+          in: query
+          schema:
+            type: string
+            maxLength: 120
+          example: Washington
+        - name: county
+          in: query
+          schema:
+            type: string
+            maxLength: 120
+          example: Pierce
+        - name: lon
+          in: query
+          description: Longitude of the radius search centre.
+          schema:
+            type: number
+            minimum: -180
+            maximum: 180
+          example: -110
+        - name: lat
+          in: query
+          description: Latitude of the radius search centre.
+          schema:
+            type: number
+            minimum: -85.05112878
+            maximum: 85.05112878
+          example: 55
+        - name: radius
+          in: query
+          description: Radius around the centre point. Ignored unless lon and lat are supplied.
+          schema:
+            type: number
+            exclusiveMinimum: 0
+            maximum: 20000
+          example: 5000
+        - name: units
+          in: query
+          schema:
+            type: string
+            enum: [m, km, mi, ft]
+            default: km
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10000
+            default: 5000
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Matching reports and their aggregations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/sightings/{id}:
+    get:
+      tags: [Sightings]
+      summary: Retrieve a single report
+      operationId: getSightingById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: BFRO report number.
+          schema:
+            type: integer
+            minimum: 0
+          example: 30680
+      responses:
+        '200':
+          description: The full report.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sighting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/facets:
+    get:
+      tags: [Sightings]
+      summary: Distinct states and counties
+      description: Values that back the autocomplete on the search form. Cached server side.
+      operationId: getFacets
+      responses:
+        '200':
+          description: Every state and county present in the data set.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facets'
+
+  /health/live:
+    get:
+      tags: [Health]
+      summary: Liveness probe
+      operationId: getLiveness
+      responses:
+        '200':
+          description: The process is running.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  uptime:
+                    type: number
+                    description: Seconds since start.
+
+  /health/ready:
+    get:
+      tags: [Health]
+      summary: Readiness probe
+      description: Reports whether Redis is reachable and the search index exists.
+      operationId: getReadiness
+      responses:
+        '200':
+          description: Ready to serve traffic.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Readiness'
+        '503':
+          description: Redis is unreachable or the index has not been built.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Readiness'
+
+components:
+  responses:
+    BadRequest:
+      description: The request failed validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    NotFound:
+      description: No such resource.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    InternalError:
+      description: Unexpected server error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+  schemas:
+    GeoPoint:
+      type: [object, 'null']
+      properties:
+        longitude:
+          type: number
+          example: -87.4
+        latitude:
+          type: number
+          example: 34.1
+
+    HighlightSegment:
+      type: object
+      description: A run of text and whether it matched the query.
+      required: [text, match]
+      properties:
+        text:
+          type: string
+        match:
+          type: boolean
+
+    SightingSummary:
+      type: object
+      description: A search hit, summarised around the matched terms.
+      properties:
+        id:
+          type: integer
+          example: 30680
+        title:
+          type: string
+        titleHighlights:
+          type: array
+          items:
+            $ref: '#/components/schemas/HighlightSegment'
+        observed:
+          type: string
+        observedHighlights:
+          type: array
+          items:
+            $ref: '#/components/schemas/HighlightSegment'
+        location:
+          $ref: '#/components/schemas/GeoPoint'
+
+    Sighting:
+      type: object
+      description: A complete report as stored in RedisJSON.
+      properties:
+        id:
+          type: integer
+          example: 30680
+        title:
+          type: string
+        observed:
+          type: string
+        date:
+          type: [integer, 'null']
+          description: Seconds since the Unix epoch, or null when the report is undated.
+        classification:
+          type: [string, 'null']
+          example: Class B
+        county:
+          type: [string, 'null']
+          example: Winston
+        state:
+          type: [string, 'null']
+          example: Alabama
+        season:
+          type: [string, 'null']
+          example: Summer
+        location:
+          type: string
+          description: Stored as "longitude,latitude".
+          example: '-87.4,34.1'
+        locationDetails:
+          type: [string, 'null']
+
+    YearBucket:
+      type: object
+      properties:
+        year:
+          type: integer
+          example: 2004
+        count:
+          type: integer
+          example: 137
+
+    SeasonBucket:
+      type: object
+      properties:
+        season:
+          type: string
+          example: Summer
+        count:
+          type: integer
+          example: 1420
+
+    SearchResult:
+      type: object
+      properties:
+        query:
+          type: string
+          nullable: true
+          description: >-
+            The RediSearch query the criteria compiled to, or null when the
+            criteria cannot match anything. Free text that reduces to no usable
+            terms - "*", or punctuation alone - is reported this way rather than
+            being dropped, which would widen the search instead of narrowing it.
+          example: '(river bear) @state:{Washington}'
+        total:
+          type: integer
+          description: Total matches before paging.
+        limit:
+          type: integer
+        offset:
+          type: integer
+        sightings:
+          type: array
+          items:
+            $ref: '#/components/schemas/SightingSummary'
+        statistics:
+          type: object
+          properties:
+            byYear:
+              type: array
+              items:
+                $ref: '#/components/schemas/YearBucket'
+            bySeason:
+              type: array
+              items:
+                $ref: '#/components/schemas/SeasonBucket'
+
+    Facets:
+      type: object
+      properties:
+        states:
+          type: array
+          items:
+            type: string
+        counties:
+          type: array
+          items:
+            type: string
+
+    Readiness:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded, unavailable]
+        redis:
+          type: string
+        index:
+          type: string
+        detail:
+          type: string
+
+    Problem:
+      type: object
+      description: RFC 9457 problem details.
+      properties:
+        type:
+          type: string
+          example: about:blank
+        title:
+          type: string
+          example: validation_failed
+        status:
+          type: integer
+          example: 400
+        detail:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string

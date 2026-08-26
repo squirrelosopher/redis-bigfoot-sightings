@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bigfoot Sightings</title>
+    <meta
+      name="description"
+      content="Full text, tag and geospatial search over BFRO Bigfoot sighting reports, powered by RediSearch and RedisJSON."
+    />
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/vendor/bootstrap.css" />
+    <link rel="stylesheet" href="/vendor/fontawesome.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!-- `container`, not `container-fluid`, so the brand lines up with the
+           left edge of the map and charts in <main> below. -->
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img
+            src="/favicon.ico"
+            alt=""
+            width="32"
+            height="32"
+            class="d-inline-block align-text-top"
+          />
+          Bigfoot Sightings
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navigation"
+          aria-controls="navigation"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navigation">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/api/docs">API docs</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="https://github.com/squirrelosopher/redis-bigfoot-sightings#readme"
+                target="_blank"
+                rel="noopener"
+                >About</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container my-4">
+      <!--
+        Every control sits in a column of the same 12 unit row and carries a
+        single line label, so `align-items-end` lines up the inputs on one
+        baseline. Labels that wrap to two lines, or a control taller than a
+        `.form-control`, are what pushed the old layout out of alignment.
+      -->
+      <div class="search-filters mx-auto">
+        <form id="searchForm" class="row g-3 align-items-end" novalidate>
+          <div class="col-12 col-lg-6">
+            <label for="text" class="form-label">Report text</label>
+            <input
+              id="text"
+              name="text"
+              type="search"
+              class="form-control"
+              placeholder="Try 'river bear'"
+              maxlength="200"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-3">
+            <label for="state" class="form-label">State</label>
+            <input
+              id="state"
+              name="state"
+              type="search"
+              class="form-control"
+              list="statesList"
+              placeholder="Any state"
+              maxlength="120"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <datalist id="statesList"></datalist>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-3">
+            <label for="county" class="form-label">County</label>
+            <input
+              id="county"
+              name="county"
+              type="search"
+              class="form-control"
+              list="countiesList"
+              placeholder="Any county"
+              maxlength="120"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <datalist id="countiesList"></datalist>
+          </div>
+
+          <div class="col-6 col-md-3 col-lg-2">
+            <label for="longitude" class="form-label">Longitude</label>
+            <input
+              id="longitude"
+              name="lon"
+              type="number"
+              class="form-control"
+              placeholder="-110"
+              step="any"
+              min="-180"
+              max="180"
+              value="-110"
+            />
+          </div>
+
+          <div class="col-6 col-md-3 col-lg-2">
+            <label for="latitude" class="form-label">Latitude</label>
+            <input
+              id="latitude"
+              name="lat"
+              type="number"
+              class="form-control"
+              placeholder="55"
+              step="any"
+              min="-85"
+              max="85"
+              value="55"
+            />
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-5">
+            <label for="radius" class="form-label d-flex justify-content-between">
+              <span>Radius</span>
+              <span class="text-primary fw-bold">
+                <span id="radiusLabel">5000</span>
+                <span id="unitsLabel">km</span>
+              </span>
+            </label>
+            <div class="radius-control d-flex align-items-center gap-2">
+              <input
+                id="radius"
+                name="radius"
+                type="range"
+                class="form-range flex-grow-1"
+                min="100"
+                max="20000"
+                step="100"
+                value="5000"
+              />
+              <button
+                id="unitsToggle"
+                type="button"
+                class="unit-toggle btn btn-outline-secondary"
+                title="Switch between kilometres and miles"
+              >
+                km
+              </button>
+            </div>
+            <input id="units" name="units" type="hidden" value="km" />
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary flex-grow-1">
+              <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
+            <button id="resetSearch" type="button" class="btn btn-outline-secondary">Reset</button>
+          </div>
+        </form>
+
+        <p id="searchStatus" class="text-muted mt-3 mb-1" role="status" aria-live="polite"></p>
+        <div id="searchAlert" class="alert alert-warning d-none" role="alert"></div>
+      </div>
+
+      <section class="mt-2">
+        <h2 class="visually-hidden">Sightings map</h2>
+        <div id="sightingsMap" class="chart"></div>
+      </section>
+
+      <section class="row mt-3">
+        <div class="col-12 col-lg-6">
+          <h2 class="visually-hidden">Sightings by season</h2>
+          <div id="seasonChart" class="chart"></div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <h2 class="visually-hidden">Sightings by year</h2>
+          <div id="yearChart" class="chart"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/vendor/plotly.js"></script>
+    <script src="/vendor/bootstrap.js"></script>
+    <script type="module" src="/scripts/app/search-page.js"></script>
+  </body>
+</html>

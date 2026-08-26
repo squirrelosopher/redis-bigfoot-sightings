@@ -1,4 +1,13 @@
+.git
+.github
 node_modules
-package-lock.json
+npm-debug.log
+test
+coverage
+screenshots
 .env
-.gitignore
+.env.*
+!.env.example
+*.md
+.vscode
+.idea
