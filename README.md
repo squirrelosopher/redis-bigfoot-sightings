@@ -152,7 +152,7 @@ curl "http://localhost:8080/api/sightings?text=river%20bear&state=Washington&lim
 }
 ```
 
-Errors are [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457) problem details:
+Errors are [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457/) problem details:
 
 ```json
 {
@@ -258,17 +258,17 @@ the import down with it.
 ## Data and credits
 
 Sighting data comes from the [BFRO](https://www.bfro.net/), via Timothy Renner's
-[geocoded data set](https://data.world/timothyrenner/bfro-sightings-data). The geocoded version is
+[geocoded data set](https://data.world/timothyrenner/bfro-sightings-data/). The geocoded version is
 used because the application offers geospatial search.
 
-Built with [Express](https://expressjs.com/), [ioredis](https://github.com/redis/ioredis),
+Built with [Express](https://expressjs.com/), [ioredis](https://github.com/redis/ioredis/),
 [Zod](https://zod.dev/), [Plotly.js](https://plotly.com/javascript/) and
 [Bootstrap](https://getbootstrap.com/).
 
-Icons from [Flaticon](https://www.flaticon.com/premium-icon/bigfoot_1126838).
+Icons from [Flaticon](https://www.flaticon.com/premium-icon/bigfoot_1126838/).
 
 ## License
 
 MIT — see [LICENSE](LICENSE).
 
-Author: Aleksandar Miladinović ([@squirrelosopher](https://github.com/squirrelosopher))
+Author: Aleksandar Miladinović ([@squirrelosopher](https://github.com/squirrelosopher/))
